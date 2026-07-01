@@ -1,17 +1,68 @@
 \documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+% ---- Blue theme colours ----
+\definecolor{earlblue}{RGB}{0,63,114}
+
+\setbeamercolor{frametitle}{bg=earlblue,fg=white}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{structure}{fg=earlblue}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{footline}{bg=earlblue,fg=white}
+\setbeamertemplate{navigation symbols}{}
+
+% Blue footline bar with logo bottom-right, used on content slides
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.8cm,dp=0.25cm]{footline}
+    \hfill\includegraphics[height=0.55cm]{assets/earlconf.png}\hspace{0.4cm}
+  \end{beamercolorbox}%
+}
+
 %Information to be included in the title page:
 \title{Sample title}
-\author{Anonymous}
+\newcommand{\presenters}{Presenter One \quad $\bullet$ \quad Presenter Two}
+\newcommand{\presenteremails}{\texttt{presenter.one@example.org} \quad $\vert$ \quad \texttt{presenter.two@example.org}}
 \institute{Overleaf}
 \date{2021}
 
 \begin{document}
 
-\frame{\titlepage}
+% ---- Cover slide: full blue background, logo centred at bottom ----
+{
+\setbeamertemplate{footline}{}
+\usebackgroundtemplate{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[earlblue] (current page.south west) rectangle (current page.north east);
+  \end{tikzpicture}%
+}
+\begin{frame}[plain]
+\centering
+\color{white}
+\vspace{1.2cm}
+{\Huge\bfseries \inserttitle\par}
+\vspace{1.2cm}
+{\Large \presenters\par}
+\vspace{0.5cm}
+{\large \presenteremails\par}
+\vspace{1.2cm}
+{\large \insertinstitute\par}
+\vspace{0.3cm}
+{\large \insertdate\par}
+\vfill
+\includegraphics[height=1.4cm]{assets/earlconf.png}
+\vspace{0.8cm}
+\end{frame}
+}
 
+% ---- Presentation slide: title + lorem ipsum, logo bottom-right ----
 \begin{frame}
 \frametitle{Sample frame title}
-This is some text in the first frame. This is some text in the first frame. This is some text in the first frame.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+\vspace{0.5cm}
+
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 \end{frame}
 
 \end{document}

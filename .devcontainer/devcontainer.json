@@ -1,6 +1,8 @@
 {
 	"name": "LaTeX (Beamer)",
-	"image": "docker.io/texlive/texlive:latest-full",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
 
 	// Mount the local workspace folder directly (bind mount) instead of a
 	// named container volume. This avoids Dev Containers needing to spin up
@@ -24,5 +26,6 @@
 		}
 	},
 
+	"remoteUser": "root",
 	"postCreateCommand": "tlmgr --version"
 }
