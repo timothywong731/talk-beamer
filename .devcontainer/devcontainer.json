@@ -20,7 +20,7 @@
 			],
 			"settings": {
 				"latex-workshop.latex.autoBuild.run": "onFileChange",
-				"latex-workshop.latex.recipe.default": "latexmk (latexmk)",
+				"latex-workshop.latex.recipe.default": "latexmk",
 				"latex-workshop.view.pdf.viewer": "tab"
 			}
 		}
