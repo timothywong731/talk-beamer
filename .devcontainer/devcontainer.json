@@ -1,0 +1,28 @@
+{
+	"name": "LaTeX (Beamer)",
+	"image": "docker.io/texlive/texlive:latest-full",
+
+	// Mount the local workspace folder directly (bind mount) instead of a
+	// named container volume. This avoids Dev Containers needing to spin up
+	// a bootstrap container that mounts /var/run/docker.sock, which is what
+	// caused the "statfs /var/run/docker.sock: permission denied" error with
+	// rootless Podman.
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"James-Yu.latex-workshop",
+				"tecosaur.latex-utilities"
+			],
+			"settings": {
+				"latex-workshop.latex.autoBuild.run": "onFileChange",
+				"latex-workshop.latex.recipe.default": "latexmk (latexmk)",
+				"latex-workshop.view.pdf.viewer": "tab"
+			}
+		}
+	},
+
+	"postCreateCommand": "tlmgr --version"
+}
