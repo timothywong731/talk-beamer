@@ -20,7 +20,7 @@
 }
 
 %Information to be included in the title page:
-\title{Sample title}
+\title{Co-Migrate: An Agentic AI System for Enterprise Cloud Migration}
 \newcommand{\presenters}{Presenter One \quad $\bullet$ \quad Presenter Two}
 \newcommand{\presenteremails}{\texttt{presenter.one@example.org} \quad $\vert$ \quad \texttt{presenter.two@example.org}}
 \institute{London Stock Exchange Group}
@@ -56,14 +56,260 @@
 \end{frame}
 }
 
-% ---- Presentation slide: title + lorem ipsum, logo bottom-right ----
+% ---- Agenda ----
 \begin{frame}
-\frametitle{Sample frame title}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\frametitle{Agenda}
+\begin{enumerate}
+  \item \textbf{Business Requirements and Context}
+  \item \textbf{Agentic Technical Deep Dive}
+  \begin{enumerate}
+    \item \textbf{Data Preprocessing}
+    \item \textbf{Inside Agentic Retrieval}
+    \item \textbf{Agentic Orchestration}
+    \item \textbf{Agents' Memory}
+    \item \textbf{Agents' Tools}
+    \item \textbf{E2E Orchestration Phases}
+  \end{enumerate}
+  \item \textbf{Application Overview}
+\end{enumerate}
+\end{frame}
 
-\vspace{0.5cm}
+% =====================================================================
+% 1. Business Requirements and Context
+% =====================================================================
+\section{Business Requirements and Context}
+\begin{frame}
+\frametitle{Business Requirements and Context}
+\begin{itemize}
+  \item \textbf{Problem:} \emph{placeholder} --- what makes enterprise cloud migration slow, risky and manual.
+  \item \textbf{Goal:} \emph{placeholder} --- automate discovery, analysis and recommendation with AI agents.
+  \item \textbf{Stakeholders \& scope:} \emph{placeholder}.
+  \item \textbf{Success criteria:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+% =====================================================================
+% 2. Data Preprocessing
+% =====================================================================
+\section{Data Preprocessing}
+\begin{frame}
+\frametitle{Data Preprocessing}
+\begin{itemize}
+  \item \textbf{Ingestion:} \emph{placeholder} --- raw sources into Azure Blob / Table storage.
+  \item \textbf{Knowledge sources \& bases:} \emph{placeholder} --- Azure AI Search skillsets.
+  \item \textbf{Chunking / enrichment:} \emph{placeholder}.
+  \item \textbf{Output:} \emph{placeholder} --- indexed data ready for agentic retrieval.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 3. Inside Agentic Retrieval
+% =====================================================================
+\section{Inside Agentic Retrieval}
+\begin{frame}
+\frametitle{Inside Agentic Retrieval}
+\begin{itemize}
+  \item \textbf{What it is:} \emph{placeholder} --- Azure AI Search agentic retrieval vs. classic RAG.
+  \item \textbf{Query planning:} \emph{placeholder}.
+  \item \textbf{Retrieval flow:} \emph{placeholder}.
+  \item \textbf{Grounding:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 4. Agentic Orchestration
+% =====================================================================
+\section{Agentic Orchestration}
+\begin{frame}
+\frametitle{Agentic Orchestration --- Overview}
+\begin{itemize}
+  \item \textbf{Framework:} \emph{placeholder} --- Microsoft Agent Framework.
+  \item \textbf{Orchestration patterns used:} GroupChatManager, Concurrent, Writer/Reviewer.
+  \item \textbf{When each pattern applies:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Agentic Orchestration --- GroupChatManager}
+\begin{itemize}
+  \item \textbf{Pattern:} \emph{placeholder} --- manager coordinates a conversation between agents.
+  \item \textbf{Turn / termination control:} \emph{placeholder}.
+  \item \textbf{Where used:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Agentic Orchestration --- Concurrent}
+\begin{itemize}
+  \item \textbf{Pattern:} \emph{placeholder} --- fan-out agents run in parallel batches.
+  \item \textbf{Aggregation:} \emph{placeholder}.
+  \item \textbf{Where used:} deep analysis batches, category-scoped UAQ agents.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Agentic Orchestration --- Writer/Reviewer}
+\begin{itemize}
+  \item \textbf{Pattern:} \emph{placeholder} --- writer drafts, reviewer critiques, loop to convergence.
+  \item \textbf{Quality gates:} \emph{placeholder}.
+  \item \textbf{Where used:} reporting phase.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 5. Agents' Memory
+% =====================================================================
+\section{Agents' Memory}
+\begin{frame}
+\frametitle{Agents' Memory}
+\begin{itemize}
+  \item \textbf{What it is:} \emph{placeholder} ---
+  \item \textbf{How it works:} \emph{placeholder} --- co-located \texttt{.agent.md} prompt, agent-owned memory, shared memory.
+  \item \textbf{Where used:} \emph{placeholder} --- discovery
+\end{itemize}
+\end{frame}  
+
+% =====================================================================
+% 6. Agents' Tools
+% =====================================================================
+\section{Agents' Tools}
+\begin{frame}
+\frametitle{Agents' Tools}
+\begin{itemize}
+  \item \textbf{Agent anatomy:} factory \texttt{get\_X\_agent()}, co-located \texttt{.agent.md} prompt, agent-owned tools.
+  \item \textbf{Tool catalogue:} \texttt{discovery\_memory}, \texttt{file\_system}, \texttt{search}, \texttt{grounding}, \texttt{ado\_docs}, \texttt{sdp\_docs}.
+  \item \textbf{Shared middleware:} \emph{placeholder} --- Agent / Function / Chat / TokenUsage logging.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 7. Agent-as-a-tool Pattern
+% =====================================================================
+\section{Agent-as-a-tool Pattern}
+\begin{frame}
+\frametitle{Agent-as-a-tool Pattern}
+\begin{itemize}
+  \item \textbf{Concept:} \emph{placeholder} --- exposing an agent as a callable tool for another agent.
+  \item \textbf{Why:} \emph{placeholder} --- composition, encapsulation, reuse.
+  \item \textbf{Example:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 8. E2E Orchestration Phases
+% =====================================================================
+\section{E2E Orchestration Phases}
+\begin{frame}
+\frametitle{E2E Orchestration Phases --- Overview}
+\begin{center}
+Discovery $\to$ Deep Analysis $\to$ Enterprise Context $\to$ UAQ $\to$ Reporting $\to$ Cleanup
+\end{center}
+\emph{placeholder} --- how the phases hand off state end-to-end.
+\end{frame}
+
+\begin{frame}
+\frametitle{Discovery Phase}
+\begin{itemize}
+  \item \textbf{Goal:} \emph{placeholder}.
+  \item \textbf{Agents \& tools:} \emph{placeholder}.
+  \item \textbf{Output:} \emph{placeholder} --- discovery memory.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Deep Analysis Phase}
+\begin{itemize}
+  \item \textbf{Goal:} \emph{placeholder}.
+  \item \textbf{Orchestration:} concurrent batches.
+  \item \textbf{Output:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Enterprise Context Phase}
+\begin{itemize}
+  \item \textbf{Goal:} \emph{placeholder} --- enrich with LSEG/enterprise context.
+  \item \textbf{Sources:} \emph{placeholder}.
+  \item \textbf{Output:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Unified Assessment Questionnaire (UAQ) Phase}
+\begin{itemize}
+  \item \textbf{Goal:} \emph{placeholder} --- Unified Assessment Questionnaire.
+  \item \textbf{Orchestration:} category-scoped concurrent agents.
+  \item \textbf{Output:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Reporting Phase}
+\begin{itemize}
+  \item \textbf{Goal:} \emph{placeholder} --- final recommendation report.
+  \item \textbf{Orchestration:} writer/reviewer loop.
+  \item \textbf{Output:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 9. Application overview
+% =====================================================================
+\section{Application overview}
+\begin{frame}
+\frametitle{Application overview}
+\begin{itemize}
+  \item \textbf{High-level architecture:} \emph{placeholder} --- diagram.
+  \item \textbf{Stack:} Python 3.12, FastAPI, Poetry; React 19 frontend.
+  \item \textbf{Data flow:} ingestion $\to$ preprocessing $\to$ agentic retrieval $\to$ orchestration.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 10. Infrastructure
+% =====================================================================
+\section{Infrastructure}
+\begin{frame}
+\frametitle{Infrastructure}
+\begin{itemize}
+  \item \textbf{Azure services:} \emph{placeholder} --- Blob / Table / Queue, AI Search, Key Vault, Foundry OpenAI.
+  \item \textbf{Deployment:} \emph{placeholder}.
+  \item \textbf{Air-gapped considerations:} offline Mermaid CLI rendering, no remote fallback.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 11. Backend
+% =====================================================================
+\section{Backend}
+\begin{frame}
+\frametitle{Backend}
+\begin{itemize}
+  \item \textbf{API:} \emph{placeholder} --- FastAPI endpoints.
+  \item \textbf{Reliability:} \texttt{retry.py} ErrorClass (transient / deterministic / partial), exponential backoff + jitter.
+  \item \textbf{Observability:} \emph{placeholder} --- OpenTelemetry token metrics.
+\end{itemize}
+\end{frame}
+
+% =====================================================================
+% 12. Frontend
+% =====================================================================
+\section{Frontend}
+\begin{frame}
+\frametitle{Frontend}
+\begin{itemize}
+  \item \textbf{Stack:} React 19.
+  \item \textbf{Key views:} \emph{placeholder}.
+  \item \textbf{UX flow:} \emph{placeholder}.
+\end{itemize}
+\end{frame}
+
+% ---- Closing ----
+\begin{frame}
+\frametitle{Questions}
+\begin{center}
+\Large Thank you --- Questions?
+\end{center}
 \end{frame}
 
 \end{document}
