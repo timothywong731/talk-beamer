@@ -20,9 +20,9 @@
 }
 
 %Information to be included in the title page:
-\title{Co-Migrate: An Agentic AI System for Enterprise Cloud Migration}
-\newcommand{\presenters}{Presenter One \quad $\bullet$ \quad Presenter Two}
-\newcommand{\presenteremails}{\texttt{presenter.one@example.org} \quad $\vert$ \quad \texttt{presenter.two@example.org}}
+\title{Agentic AI System for Enterprise Cloud Migration}
+\newcommand{\presenters}{Timothy Wong \quad $\bullet$ \quad Alessandro Abati}
+\newcommand{\presenteremails}{\texttt{timothy.wong@lseg.com} \quad $\vert$ \quad \texttt{alessandro.abati@lseg.com}}
 \institute{London Stock Exchange Group}
 \date{7 Oct 2026}
 
@@ -56,6 +56,68 @@
 \end{frame}
 }
 
+% ---- Speaker Introduction ----
+\begin{frame}
+\frametitle{About the Speakers}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+  \centering
+  \IfFileExists{assets/tim.png}{%
+    \includegraphics[height=0.6\linewidth]{assets/tim.png}%
+  }{%
+    \fbox{\parbox[c][0.6\linewidth][c]{0.6\linewidth}{\centering Photo\\missing}}%
+  }
+  \\[0.3cm]
+  \textbf{Timothy Wong} \\
+  {\footnotesize
+  Tim is an AI/ML engineer at LSEG with over ten years experience in enterprise data science applications.
+  He hosted talks at EARL 2016, 17, 19 \& 24.}
+\end{column}
+\begin{column}{0.5\textwidth}
+  \centering
+  \IfFileExists{assets/alessandro.png}{%
+    \includegraphics[height=0.6\linewidth]{assets/alessandro.png}%
+  }{%
+    \fbox{\parbox[c][0.6\linewidth][c]{0.6\linewidth}{\centering Photo\\missing}}%
+  }
+  \\[0.3cm]
+  \textbf{Alessandro Abati} \\  
+  {\footnotesize
+  placeholder}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ---- About LSEG ----
+\begin{frame}
+\frametitle{About LSEG}
+\begin{columns}[T]
+\begin{column}{0.38\textwidth}
+  \centering
+  \vspace{0.6cm}
+  \IfFileExists{assets/lseg.png}{%
+    \includegraphics[width=\linewidth]{assets/lseg.png}%
+  }{%
+    \textbf{\large London Stock\\[2pt]Exchange Group}%
+  }
+  \small
+  LSEG is a leading financial markets infrastructure and data provider operating connected businesses to serve customers across the entire financial markets value chain.
+  
+\end{column}
+\begin{column}{0.58\textwidth}
+  \small
+  \vspace{0.4cm}
+  \begin{itemize}
+    \item \textbf{London Stock Exchange} 
+    \item \textbf{FTSE Russell:} Indices across asset classes, including FTSE 100, FTSE 250, Russell 2000, and ESG indices.
+    \item \textbf{Data \& Analytics:} Workspace platform, pricing, reference data.
+    \item \textbf{Clearing:} LCH, multi-asset class clearing house.
+    \item \textbf{Scale:} \textasciitilde{}26\,000 employees across many countries.
+  \end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
 % ---- Agenda ----
 \begin{frame}
 \frametitle{Agenda}
@@ -73,6 +135,7 @@
   \item \textbf{Application Overview}
 \end{enumerate}
 \end{frame}
+
 
 % =====================================================================
 % 1. Business Requirements and Context
