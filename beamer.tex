@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
 
 % ---- Blue theme colours ----
 \definecolor{earlblue}{RGB}{0,63,114}
@@ -153,13 +154,52 @@
 % =====================================================================
 \section{Data Preprocessing}
 \begin{frame}
-\frametitle{Data Preprocessing}
+\frametitle{Data Preprocessing - Making Documentation AI-Ready}
+
+\vspace{-0.15cm}
+\begin{center}
+\begin{tikzpicture}[node distance=0.4cm,every node/.style={transform shape}]
+  \tikzstyle{src}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    minimum width=1.8cm,minimum height=0.55cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{core}=[draw=earlblue,very thick,rounded corners,fill=earlblue,
+    minimum width=2.3cm,minimum height=1.7cm,align=center,text=white,font=\scriptsize\bfseries]
+  \tikzstyle{stage}=[draw=earlblue,thick,rounded corners,fill=earlblue!12,
+    minimum width=2.3cm,minimum height=0.7cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{flow}=[-{Latex[length=2mm]},earlblue,very thick]
+
+  % -- Multimodal inputs (stacked) --
+  \node[src] (docs)  {Documents};
+  \node[src,below=of docs]   (imgs)  {Images};
+  \node[src,below=of imgs]   (media) {Video / Audio};
+  \node[above=0.12cm of docs,text=earlblue,font=\scriptsize\itshape] {Multimodal sources};
+
+  % -- Azure Content Understanding (core) --
+  \node[core,right=1.2cm of imgs] (cu) {Azure\\ Content\\ Understanding};
+  \node[above=0.1cm of cu,text=earlblue,font=\scriptsize\itshape,align=center] {Make all data\\ accessible};
+
+  % -- Right column: markdown -> search -> AI-ready (vertical chain) --
+  \node[stage,right=1.1cm of cu] (md) {Clean, structured\\ Markdown};
+  \node[stage,below=of md] (search) {Azure AI Search\\ index};
+  \node[stage,below=of search,fill=earlblue,text=white] (ready) {AI-ready\\ knowledge base};
+
+  % -- Flows --
+  \draw[flow] (docs.east)  -- (cu.west);
+  \draw[flow] (imgs.east)  -- (cu.west);
+  \draw[flow] (media.east) -- (cu.west);
+  \draw[flow] (cu.east) -- (md.west);
+  \draw[flow] (md.south) -- (search.north);
+  \draw[flow] (search.south) -- (ready.north);
+\end{tikzpicture}
+\end{center}
+
+\vspace{-0.1cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{Ingestion:} \emph{placeholder} --- raw sources into Azure Blob / Table storage.
-  \item \textbf{Knowledge sources \& bases:} \emph{placeholder} --- Azure AI Search skillsets.
-  \item \textbf{Chunking / enrichment:} \emph{placeholder}.
-  \item \textbf{Output:} \emph{placeholder} --- indexed data ready for agentic retrieval.
+  \item \textbf{\color{earlblue}Content Understanding:} one analyzer for \emph{any} modality - OCR, layout, tables and figure descriptions turn messy files into clean Markdown.
+  \item \textbf{\color{earlblue}Make all data accessible:} charts, diagrams and scans become searchable text, so nothing is lost to downstream agents.
+  \item \textbf{\color{earlblue}Azure AI Search:} content is chunked and indexed into an AI-ready knowledge base for agentic retrieval.
 \end{itemize}
+}
 \end{frame}
 
 % =====================================================================
@@ -167,13 +207,64 @@
 % =====================================================================
 \section{Inside Agentic Retrieval}
 \begin{frame}
-\frametitle{Inside Agentic Retrieval}
+\frametitle{Inside Agentic Retrieval - A Multi-Query Pipeline}
+
+\vspace{-0.15cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.85,every node/.style={transform shape}]
+  \tikzstyle{io}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    minimum width=2cm,minimum height=1cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{core}=[draw=earlblue,very thick,rounded corners,fill=earlblue,
+    minimum width=2cm,minimum height=1cm,align=center,text=white,font=\scriptsize\bfseries]
+  \tikzstyle{sub}=[draw=earlblue,thick,rounded corners,fill=earlblue!12,
+    minimum width=1.9cm,minimum height=0.5cm,align=center,text=earlblue,font=\tiny\bfseries]
+  \tikzstyle{stage}=[draw=earlblue,thick,rounded corners,fill=earlblue!12,
+    minimum width=1.9cm,minimum height=1cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{flow}=[-{Latex[length=2mm]},earlblue,very thick]
+
+  % -- Input --
+  \node[io] (query) at (0,0) {Complex query\\ + chat\\ history};
+
+  % -- LLM query planning --
+  \node[core] (plan) at (2.7,0) {LLM query\\ planning};
+  \node[above=0.08cm of plan,text=earlblue,font=\tiny\itshape,align=center] {decompose};
+
+  % -- Parallel subqueries --
+  \node[sub] (s1) at (5.4,1) {keyword};
+  \node[sub] (s2) at (5.4,0) {vector};
+  \node[sub] (s3) at (5.4,-1) {hybrid};
+  \node[above=0.16cm of s1,text=earlblue,font=\tiny\itshape] {subqueries in parallel};
+
+  % -- Semantic reranking --
+  \node[stage] (rank) at (8,0) {Semantic\\ reranking\\ (L2)};
+
+  % -- Merge / output --
+  \node[core,minimum height=1.4cm] (resp) at (10.6,0) {Unified\\ grounded\\ response\\ + citations};
+
+  % -- Flows --
+  \draw[flow] (query.east) -- (plan.west);
+  \draw[flow] (plan.east) -- (s1.west);
+  \draw[flow] (plan.east) -- (s2.west);
+  \draw[flow] (plan.east) -- (s3.west);
+  \draw[flow] (s1.east) -- (rank.west);
+  \draw[flow] (s2.east) -- (rank.west);
+  \draw[flow] (s3.east) -- (rank.west);
+  \draw[flow] (rank.east) -- (resp.west);
+
+  % -- Knowledge sources note under subqueries --
+  \node[below=0.5cm of s3,text=earlblue,font=\tiny\itshape,align=center]
+    {keyword / vector / hybrid search\\ over indexed \& remote knowledge sources};
+\end{tikzpicture}
+\end{center}
+
+\vspace{-0.05cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{What it is:} \emph{placeholder} --- Azure AI Search agentic retrieval vs. classic RAG.
-  \item \textbf{Query planning:} \emph{placeholder}.
-  \item \textbf{Retrieval flow:} \emph{placeholder}.
-  \item \textbf{Grounding:} \emph{placeholder}.
+  \item \textbf{\color{earlblue}Beyond classic RAG:} handles multi-part questions, chat context, typos and paraphrasing that a single query can't.
+  \item \textbf{\color{earlblue}Query planning:} an LLM breaks the query down into focused subqueries that run \emph{in parallel}, each semantically reranked.
+  \item \textbf{\color{earlblue}Grounded output:} best results are merged into one response with source citations and an activity log for agents.
 \end{itemize}
+}
 \end{frame}
 
 % =====================================================================
@@ -181,39 +272,190 @@
 % =====================================================================
 \section{Agentic Orchestration}
 \begin{frame}
-\frametitle{Agentic Orchestration --- Overview}
+\frametitle{Agentic Orchestration - Overview}
+
+\vspace{-0.1cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.9,every node/.style={transform shape}]
+  \tikzstyle{card}=[draw=earlblue,very thick,rounded corners,fill=earlblue!8,
+    minimum width=3.1cm,minimum height=2.4cm,align=center,text=earlblue]
+  \tikzstyle{hd}=[fill=earlblue,text=white,font=\scriptsize\bfseries,
+    minimum width=3.1cm,minimum height=0.5cm,align=center]
+  \tikzstyle{mini}=[draw=earlblue,thick,rounded corners,fill=earlblue!15,
+    minimum size=0.35cm,inner sep=1pt,text=earlblue,font=\tiny\bfseries]
+  \tikzstyle{f}=[-{Latex[length=1.3mm]},earlblue,thick]
+
+  % -- Card 1: Group Chat (1 manager + 1 ReAct agent) --
+  \node[card] (c1) at (0,0) {};
+  \node[hd,anchor=north] at (c1.north) {Group Chat};
+  \node[mini] (m) at (-0.7,-0.4) {mgr};
+  \node[mini] (a1) at (0.8,-0.4) {ReAct};
+  \draw[f] (m) to[bend left=22] (a1);
+  \draw[f] (a1) to[bend left=22] (m);
+  \draw[f] (a1) to[out=-35,in=35,looseness=4] (a1);
+
+  % -- Card 2: Concurrent --
+  \node[card] (c2) at (3.7,0) {};
+  \node[hd,anchor=north] at (c2.north) {Concurrent};
+  \node[mini] (t) at (3.0,-0.3) {task};
+  \node[mini] (b1) at (4.3,0.35) {A};
+  \node[mini] (b2) at (4.3,-0.3) {A};
+  \node[mini] (b3) at (4.3,-0.95) {A};
+  \draw[f] (t) -- (b1); \draw[f] (t) -- (b2); \draw[f] (t) -- (b3);
+
+  % -- Card 3: Writer / Reviewer --
+  \node[card] (c3) at (7.4,0) {};
+  \node[hd,anchor=north] at (c3.north) {Writer / Reviewer};
+  \node[mini] (w) at (6.7,-0.15) {write};
+  \node[mini] (r) at (8.1,-0.15) {review};
+  \draw[f] (w) to[bend left=30] (r);
+  \draw[f] (r) to[bend left=30] (w);
+  \node[text=earlblue,font=\tiny\itshape,align=center] at (7.4,-0.95) {round-robin\\ flavour};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.1cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{Framework:} \emph{placeholder} --- Microsoft Agent Framework.
-  \item \textbf{Orchestration patterns used:} GroupChatManager, Concurrent, Writer/Reviewer.
-  \item \textbf{When each pattern applies:} \emph{placeholder}.
+  \item \textbf{\color{earlblue}Framework:} Microsoft \textbf{Semantic Kernel} agent orchestration, tailored to our use case.
+  \item \textbf{\color{earlblue}Two patterns:} \emph{Group Chat} (1 manager + 1 ReAct agent, custom termination) and \emph{Concurrent} (parallel, per-repo agents).
+  \item \textbf{\color{earlblue}Writer/Reviewer} is a \emph{Round-Robin} flavour of Group Chat - same orchestration, alternating turns.
 \end{itemize}
+}
 \end{frame}
 
 \begin{frame}
-\frametitle{Agentic Orchestration --- GroupChatManager}
+\frametitle{Agentic Orchestration - Group Chat}
+
+\vspace{-0.5cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.82,every node/.style={transform shape}]
+  \tikzstyle{core}=[draw=earlblue,very thick,rounded corners,fill=earlblue,
+    minimum width=2.5cm,minimum height=1.6cm,align=center,text=white,font=\scriptsize\bfseries]
+  \tikzstyle{ag}=[draw=earlblue,thick,rounded corners,fill=earlblue!10,
+    minimum width=3cm,minimum height=1.6cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{f}=[-{Latex[length=2mm]},earlblue,very thick]
+
+  % -- Manager --
+  \node[core] (mgr) at (0,0) {Group Chat\\ Manager};
+
+  % -- Single ReAct agent --
+  \node[ag] (agent) at (5,0) {\textbf{ReAct Agent}\\[3pt]\scriptsize reason $\to$ act $\to$ observe};
+  % internal react loop
+  \draw[f] (agent.north east) to[out=50,in=-50,looseness=3.5]
+    node[right,font=\tiny,text=earlblue]{internal loop} (agent.south east);
+
+  % -- invoke / results --
+  \draw[f] (mgr.east) to[bend left=18] node[midway,above,font=\tiny\bfseries,text=earlblue]{invoke} (agent.west);
+  \draw[f] (agent.west) to[bend left=18] node[midway,below,font=\tiny,text=earlblue]{results} (mgr.east);
+
+  % -- custom termination --
+  \node[below=0.35cm of mgr,align=center,font=\tiny,text=earlblue]
+    {\textbf{Custom termination:}\\ check results $\to$\\ re-trigger if not done};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.05cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{Pattern:} \emph{placeholder} --- manager coordinates a conversation between agents.
-  \item \textbf{Turn / termination control:} \emph{placeholder}.
-  \item \textbf{Where used:} \emph{placeholder}.
+  \item \textbf{\color{earlblue}Our setup:} \emph{one} manager coordinating a \emph{single} ReAct agent - not a multi-agent debate.
+  \item \textbf{\color{earlblue}Why a manager:} a ReAct agent's reason--act loop is trained to stop early; the manager inspects its results and \emph{re-triggers} the loop when the task isn't complete.
+  \item \textbf{\color{earlblue}Net effect:} a custom termination strategy on top of the agent's own reason--act loop.
 \end{itemize}
+}
 \end{frame}
 
 \begin{frame}
-\frametitle{Agentic Orchestration --- Concurrent}
+\frametitle{Agentic Orchestration - Concurrent}
+
+\vspace{-0.1cm}
+\begin{center}
+\begin{tikzpicture}[scale=0.86,every node/.style={transform shape}]
+  \tikzstyle{io}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    minimum width=1.7cm,minimum height=0.9cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{ag}=[draw=earlblue,thick,rounded corners,fill=earlblue!12,
+    minimum width=2.3cm,minimum height=0.7cm,align=center,text=earlblue,font=\tiny\bfseries]
+  \tikzstyle{res}=[draw=earlblue,thick,rounded corners,fill=earlblue,
+    minimum width=1.7cm,minimum height=0.7cm,align=center,text=white,font=\tiny\bfseries]
+  \tikzstyle{f}=[-{Latex[length=2mm]},earlblue,very thick]
+
+  \node[io] (task) at (0,0) {Task};
+
+  \node[ag] (a1) at (3,1.4) {Agent $\cdot$ Repo A};
+  \node[ag] (a2) at (3,0)   {Agent $\cdot$ Repo B};
+  \node[ag] (a3) at (3,-1.4){Agent $\cdot$ Repo C};
+  \node[above=0.12cm of a1,text=earlblue,font=\tiny\itshape] {run in parallel};
+
+  \node[res] (o1) at (6,1.4) {Result A};
+  \node[res] (o2) at (6,0)   {Result B};
+  \node[res] (o3) at (6,-1.4){Result C};
+
+  \draw[f] (task.east) -- (a1.west);
+  \draw[f] (task.east) -- (a2.west);
+  \draw[f] (task.east) -- (a3.west);
+  \draw[f] (a1.east) -- (o1.west);
+  \draw[f] (a2.east) -- (o2.west);
+  \draw[f] (a3.east) -- (o3.west);
+
+  \node[below=0.45cm of a3,text=earlblue,font=\tiny\itshape,align=center]
+    {no merge - each result kept separate};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.05cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{Pattern:} \emph{placeholder} --- fan-out agents run in parallel batches.
-  \item \textbf{Aggregation:} \emph{placeholder}.
-  \item \textbf{Where used:} deep analysis batches, category-scoped UAQ agents.
+  \item \textbf{\color{earlblue}Our setup:} the task fans out to one agent \emph{per repo}, all running in parallel.
+  \item \textbf{\color{earlblue}No aggregation:} results are \emph{not} combined - each agent only needs its own repo's context.
+  \item \textbf{\color{earlblue}Benefits:} parallelism for speed, plus clean isolation - no cross-repo context bleed.
 \end{itemize}
+}
 \end{frame}
 
 \begin{frame}
-\frametitle{Agentic Orchestration --- Writer/Reviewer}
+\frametitle{Agentic Orchestration - Writer/Reviewer}
+
+\vspace{-0.15cm}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.78,every node/.style={transform shape}]
+  \tikzstyle{core}=[draw=earlblue,very thick,rounded corners,fill=earlblue,
+    minimum width=2.5cm,minimum height=1.6cm,align=center,text=white,font=\scriptsize\bfseries]
+  \tikzstyle{ag}=[draw=earlblue,thick,rounded corners,fill=earlblue!10,
+    minimum width=1.9cm,minimum height=0.7cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{f}=[-{Latex[length=2mm]},earlblue,very thick]
+
+  \node[core] (mgr) at (0,0) {Round-Robin\\ Group Chat\\ Manager};
+  \node[ag] (w) at (3.6,1) {Writer};
+  \node[ag] (r) at (3.6,-1) {Reviewer};
+
+  \draw[f] (mgr.east) to[bend left=15] node[midway,above,font=\tiny\bfseries,text=earlblue]{turn 1} (w.west);
+  \draw[f] (w.west) to[bend left=15] (mgr.east);
+  \draw[f] (mgr.east) to[bend right=15] node[midway,below,font=\tiny\bfseries,text=earlblue]{turn 2} (r.west);
+  \draw[f] (r.west) to[bend right=15] (mgr.east);
+\end{tikzpicture}
+\end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{\footnotesize What Round-Robin overrides}
+{\scriptsize
+\texttt{SelectNextAgent} - picks the next agent by a fixed \textbf{cyclic order} (a round-robin cursor).
+\vspace{2pt}
+\par{\color{earlblue}\itshape Everything else is inherited from the base \texttt{GroupChatManager}.}
+}
+\end{block}
+\end{column}
+\end{columns}
+
+\vspace{0.55cm}
+{\footnotesize
 \begin{itemize}
-  \item \textbf{Pattern:} \emph{placeholder} --- writer drafts, reviewer critiques, loop to convergence.
-  \item \textbf{Quality gates:} \emph{placeholder}.
-  \item \textbf{Where used:} reporting phase.
+  \item \textbf{\color{earlblue}Same pattern:} reuses the \emph{Group Chat} orchestration with the \texttt{RoundRobinGroupChatManager} flavour - no custom manager logic needed.
+  \item \textbf{\color{earlblue}Deterministic turns:} Writer drafts, Reviewer critiques, alternating for a fixed number of rounds (writer gets the last word).
+  \item \textbf{\color{earlblue}Benefits:} a built-in quality gate - iterative critique lifts output quality with predictable turns and no custom manager logic.
 \end{itemize}
+}
 \end{frame}
 
 % =====================================================================
