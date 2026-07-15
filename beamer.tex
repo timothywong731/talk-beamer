@@ -15,6 +15,7 @@
 % Blue footline bar with logo bottom-right, used on content slides
 \setbeamertemplate{footline}{%
   \begin{beamercolorbox}[wd=\paperwidth,ht=0.8cm,dp=0.25cm]{footline}
+    \hspace{0.4cm}\usebeamerfont{footline}\insertframenumber\,/\,\inserttotalframenumber
     \hfill\includegraphics[height=0.55cm]{assets/earlconf.png}\hspace{0.4cm}
   \end{beamercolorbox}%
 }
@@ -129,7 +130,6 @@
     \item \textbf{Agents' Tools}
     \item \textbf{E2E Orchestration Phases}
   \end{enumerate}
-  \item \textbf{Application Overview}
 \end{enumerate}
 \end{frame}
 
@@ -222,12 +222,49 @@
 \section{Agents' Memory}
 \begin{frame}
 \frametitle{Agents' Memory}
-\begin{itemize}
-  \item \textbf{What it is:} \emph{placeholder} ---
-  \item \textbf{How it works:} \emph{placeholder} --- co-located \texttt{.agent.md} prompt, agent-owned memory, shared memory.
-  \item \textbf{Where used:} \emph{placeholder} --- discovery
-\end{itemize}
-\end{frame}  
+\small
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+  \textbf{Shared long-term memory}
+  \begin{itemize}\setlength\itemsep{1pt}
+    \item A single shared memory accumulates findings across the whole run.
+    \item Each phase reads what earlier phases discovered and writes back its own results.
+    \item Later phases build on earlier work instead of re-reading the raw inputs.
+  \end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+  \textbf{Passing context between phases}
+  \begin{itemize}\setlength\itemsep{1pt}
+    \item The pipeline is serial: every phase produces a report.
+    \item Each report, with the shared memory, becomes the input context for the next phase.
+    \item By the final phase, agents reason over the full accumulated picture.
+  \end{itemize}
+\end{column}
+\end{columns}
+\vspace{0.05cm}
+\begin{center}
+\resizebox{0.72\linewidth}{!}{%
+\begin{tikzpicture}[
+  ph/.style={draw, rounded corners=2pt, fill=yellow!25, align=center,
+             minimum width=1.9cm, minimum height=0.6cm, font=\small},
+  cache/.style={draw=earlblue, very thick, rounded corners=3pt, fill=earlblue!15,
+                align=center, minimum width=11cm, minimum height=0.7cm, font=\small},
+  arr/.style={->, >=stealth, thick},
+  rw/.style={<->, >=stealth, gray},
+]
+  \node[ph] (d) at (0,0)    {Discovery};
+  \node[ph] (a) at (2.6,0)  {Deep\\Analysis};
+  \node[ph] (l) at (5.2,0)  {Enterprise\\Context};
+  \node[ph] (u) at (7.8,0)  {Readiness\\Questionnaire};
+  \node[ph] (r) at (10.4,0) {Reporting};
+  \draw[arr] (d) -- (a); \draw[arr] (a) -- (l); \draw[arr] (l) -- (u); \draw[arr] (u) -- (r);
+  \node[cache] (c) at (5.2,-1.5) {Shared long-term memory};
+  \foreach \n in {d,a,l,u,r} \draw[rw] (\n) -- (\n |- c.north);
+\end{tikzpicture}
+}
+\end{center}
+{\footnotesize\textit{Reports flow forward; every phase reads from and writes to the shared memory.}}
+\end{frame}
 
 % =====================================================================
 % 6. Agents' Tools
@@ -235,134 +272,156 @@
 \section{Agents' Tools}
 \begin{frame}
 \frametitle{Agents' Tools}
-\begin{itemize}
-  \item \textbf{Agent anatomy:} factory \texttt{get\_X\_agent()}, co-located \texttt{.agent.md} prompt, agent-owned tools.
-  \item \textbf{Tool catalogue:} \texttt{discovery\_memory}, \texttt{file\_system}, \texttt{search}, \texttt{grounding}, \texttt{ado\_docs}, \texttt{sdp\_docs}.
-  \item \textbf{Shared middleware:} \emph{placeholder} --- Agent / Function / Chat / TokenUsage logging.
-\end{itemize}
+\small
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+  \textbf{What tools are available}
+  \begin{itemize}\setlength\itemsep{2pt}
+    \item \textbf{File access:} browse and read the codebase and documents.
+    \item \textbf{Knowledge retrieval:} ask questions over indexed documents; answers cite their sources.
+    \item \textbf{Enterprise knowledge:} search organisational guidance (security, cloud, DevOps standards).
+    \item \textbf{Diagrams:} create, validate and fix architecture diagrams, rendered offline.
+  \end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+  \textbf{How agents use them}
+  \begin{itemize}\setlength\itemsep{2pt}
+    \item Each agent is given only the tools relevant to its task.
+    \item Tools turn raw inputs into structured, grounded findings.
+    \item Grounded retrieval keeps answers anchored to real evidence.
+    \item Tool use is logged for observability and cost tracking.
+  \end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 % =====================================================================
-% 7. Agent-as-a-tool Pattern
-% =====================================================================
-\section{Agent-as-a-tool Pattern}
-\begin{frame}
-\frametitle{Agent-as-a-tool Pattern}
-\begin{itemize}
-  \item \textbf{Concept:} \emph{placeholder} --- exposing an agent as a callable tool for another agent.
-  \item \textbf{Why:} \emph{placeholder} --- composition, encapsulation, reuse.
-  \item \textbf{Example:} \emph{placeholder}.
-\end{itemize}
-\end{frame}
-
-% =====================================================================
-% 8. E2E Orchestration Phases
+% E2E Orchestration Phases
 % =====================================================================
 \section{E2E Orchestration Phases}
 \begin{frame}
-\frametitle{E2E Orchestration Phases --- Overview}
+\frametitle{E2E Orchestration Phases}
+\vspace{-0.2cm}
 \begin{center}
-Discovery $\to$ Deep Analysis $\to$ Enterprise Context $\to$ UAQ $\to$ Reporting $\to$ Cleanup
+\resizebox{0.99\linewidth}{!}{%
+\begin{tikzpicture}[
+  stage/.style={draw, rounded corners=2pt, fill=yellow!25, text width=1.6cm,
+                align=center, minimum height=0.7cm, inner sep=3pt, font=\small},
+  rep/.style={draw, rounded corners=2pt, fill=orange!40, text width=1.5cm,
+              align=center, minimum height=0.6cm, inner sep=2pt, font=\small},
+  io/.style={draw=earlblue, thick, rounded corners=3pt, fill=earlblue!20,
+             text width=1.4cm, align=center, minimum height=0.65cm, inner sep=2pt, font=\small},
+  final/.style={draw=orange!80!black, very thick, rounded corners=3pt, fill=yellow!55,
+                text width=1.9cm, align=center, minimum height=0.7cm, inner sep=3pt, font=\small},
+  arr/.style={->, >=stealth, thick},
+  darr/.style={->, >=stealth, dashed, gray},
+]
+  % Input group
+  \draw[earlblue!60, dashed, rounded corners=4pt, thick] (-0.95,0.15) rectangle (1.25,2.85);
+  \node[io, text width=1.9cm] (legacy) at (0.15, 2.35) {\textbf{Legacy App}};
+  \node[io, minimum width=0.8cm, text width=0.7cm] (docs) at (-0.4, 1.35) {Docs};
+  \node[io, minimum width=0.8cm, text width=0.7cm] (repo) at (0.7, 1.35) {Repo};
+  % Human left
+  \draw[arr] (-2.5, 1.7) node[left, font=\normalsize\bfseries] {Human} -- (-0.95, 1.7);
+  % Pipeline stages
+  \node[stage] (da)  at (2.8,  1.7) {Doc\\Analysis};
+  \node[stage] (dis) at (4.9,  1.7) {Discovery};
+  \node[stage] (dep) at (7.0,  1.7) {Deep\\Analysis};
+  \node[stage] (ec)  at (9.4,  1.7) {Enterprise\\Context};
+  \node[stage] (uaq) at (11.5, 1.7) {UAQ};
+  \node[stage] (rpt) at (13.6, 1.7) {Reporting};
+  % Orchestration annotations
+  \node[font=\scriptsize\itshape, text=earlblue] at (7.0,  2.55) {concurrent batches};
+  \node[font=\scriptsize\itshape, text=earlblue] at (11.5, 2.55) {concurrent agents};
+  \node[font=\scriptsize\itshape, text=earlblue] at (13.6, 2.55) {writer/reviewer};
+  % Stage arrows
+  \draw[arr] (1.25, 1.7) -- (da);
+  \draw[arr] (da)  -- (dis);
+  \draw[arr] (dis) -- (dep);
+  \draw[arr] (dep) -- (ec);
+  \draw[arr] (ec)  -- (uaq);
+  \draw[arr] (uaq) -- (rpt);
+  % Report boxes
+  \node[rep] (dar)  at (2.8,  0.35) {Doc\\report};
+  \node[rep] (dir)  at (4.9,  0.35) {Discovery\\report};
+  \node[rep] (dpr)  at (7.0,  0.35) {Deep\\report};
+  \node[rep] (sdp)  at (8.7, -0.55) {Security\\context};
+  \node[rep] (azr)  at (10.1,-0.55) {Cloud\\context};
+  \node[rep] (uaqr) at (11.5, 0.35) {UAQ\\report};
+  % Dashed arrows to reports
+  \draw[darr] (da)       -- (dar);
+  \draw[darr] (dis)      -- (dir);
+  \draw[darr] (dep)      -- (dpr);
+  \draw[darr] (ec.south) -- (sdp.north);
+  \draw[darr] (ec.south) -- (azr.north);
+  \draw[darr] (uaq)      -- (uaqr);
+  % Final output
+  \node[final] (out) at (15.8, 1.7) {\textbf{Assessment\\Report} $\bigstar$};
+  \draw[arr] (rpt) -- (out);
+  % Human right
+  \draw[arr] (out) -- (17.5, 1.7) node[right, font=\normalsize\bfseries] {Human};
+\end{tikzpicture}
+}
 \end{center}
-\emph{placeholder} --- how the phases hand off state end-to-end.
-\end{frame}
-
-\begin{frame}
-\frametitle{Discovery Phase}
-\begin{itemize}
-  \item \textbf{Goal:} \emph{placeholder}.
-  \item \textbf{Agents \& tools:} \emph{placeholder}.
-  \item \textbf{Output:} \emph{placeholder} --- discovery memory.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Deep Analysis Phase}
-\begin{itemize}
-  \item \textbf{Goal:} \emph{placeholder}.
-  \item \textbf{Orchestration:} concurrent batches.
-  \item \textbf{Output:} \emph{placeholder}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Enterprise Context Phase}
-\begin{itemize}
-  \item \textbf{Goal:} \emph{placeholder} --- enrich with LSEG/enterprise context.
-  \item \textbf{Sources:} \emph{placeholder}.
-  \item \textbf{Output:} \emph{placeholder}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Unified Assessment Questionnaire (UAQ) Phase}
-\begin{itemize}
-  \item \textbf{Goal:} \emph{placeholder} --- Unified Assessment Questionnaire.
-  \item \textbf{Orchestration:} category-scoped concurrent agents.
-  \item \textbf{Output:} \emph{placeholder}.
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Reporting Phase}
-\begin{itemize}
-  \item \textbf{Goal:} \emph{placeholder} --- final recommendation report.
-  \item \textbf{Orchestration:} writer/reviewer loop.
-  \item \textbf{Output:} \emph{placeholder}.
+\vspace{0.05cm}
+{\footnotesize\textit{Inputs (documents \& code) enter on the left; each phase records its findings and passes context forward.}}
+\vspace{0.15cm}
+\footnotesize
+\begin{itemize}\setlength\itemsep{1pt}
+  \item \textbf{Discovery:} group the code and documents into logical components. \textit{(Output: a map of the system.)}
+  \item \textbf{Deep Analysis:} assess each component's migration readiness, in parallel. \textit{(Output: per-component findings.)}
+  \item \textbf{Enterprise Context:} apply organisational security and cloud standards. \textit{(Output: policy-aligned recommendations.)}
+  \item \textbf{Readiness Questionnaire:} answer a standard cloud-readiness questionnaire. \textit{(Output: structured answers.)}
+  \item \textbf{Reporting:} consolidate and review all findings. \textit{(Output: the final assessment report.)}
 \end{itemize}
 \end{frame}
 
 % =====================================================================
-% 9. Application overview
+% Infrastructure & Backend
 % =====================================================================
-\section{Application overview}
+\section{Infrastructure \& Backend}
 \begin{frame}
-\frametitle{Application overview}
-\begin{itemize}
-  \item \textbf{High-level architecture:} \emph{placeholder} --- diagram.
-  \item \textbf{Stack:} Python 3.12, FastAPI, Poetry; React 19 frontend.
-  \item \textbf{Data flow:} ingestion $\to$ preprocessing $\to$ agentic retrieval $\to$ orchestration.
+\frametitle{Infrastructure \& Backend}
+\begin{center}
+\resizebox{0.95\linewidth}{!}{%
+\begin{tikzpicture}[
+  comp/.style={draw, rounded corners=2pt, fill=yellow!25, align=center,
+               minimum width=2.2cm, minimum height=0.85cm, font=\small},
+  ext/.style={draw=earlblue, thick, rounded corners=2pt, fill=earlblue!15, align=center,
+              minimum width=2.1cm, minimum height=0.85cm, font=\small},
+  store/.style={draw=orange!80!black, thick, rounded corners=2pt, fill=orange!25, align=center,
+                minimum width=2.2cm, minimum height=0.85cm, font=\small},
+  arr/.style={<->, >=stealth, thick},
+  oarr/.style={->, >=stealth, thick},
+]
+  \node[ext]   (user)    at (0, 3)     {User};
+  \node[comp]  (ui)      at (3, 3)     {Web UI};
+  \node[comp]  (api)     at (6, 3)     {API service};
+  \node[comp]  (queue)   at (9, 3)     {Queue};
+  \node[comp]  (worker)  at (9, 1)     {Worker\\(pipeline engine)};
+  \node[store] (storage) at (6, 1)     {Storage\\(docs \& reports)};
+  \node[ext]   (search)  at (12.3, 2)  {Search index};
+  \node[ext]   (llm)     at (12.3, 0)  {Model service};
+
+  \draw[arr]  (user)   -- (ui);
+  \draw[arr]  (ui)     -- (api);
+  \draw[arr]  (api)    -- (queue);
+  \draw[oarr] (api)    -- (storage);
+  \draw[oarr] (queue)  -- (worker);
+  \draw[arr]  (worker) -- (storage);
+  \draw[oarr] (worker) -- (search);
+  \draw[oarr] (worker) -- (llm);
+\end{tikzpicture}
+}
+\end{center}
+\vspace{0.2cm}
+\begin{itemize}\setlength\itemsep{2pt}
+  \item \textbf{Flow:} users upload through the web UI; the API stores inputs and queues a job; a worker then runs the phase pipeline.
+  \item \textbf{Shared services:} the worker draws on storage, the search index and the model service to complete each phase.
+  \item \textbf{Isolated environment:} the system runs fully offline, with automatic retries on transient failures.
 \end{itemize}
 \end{frame}
 
-% =====================================================================
-% 10. Infrastructure
-% =====================================================================
-\section{Infrastructure}
-\begin{frame}
-\frametitle{Infrastructure}
-\begin{itemize}
-  \item \textbf{Azure services:} \emph{placeholder} --- Blob / Table / Queue, AI Search, Key Vault, Foundry OpenAI.
-  \item \textbf{Deployment:} \emph{placeholder}.
-  \item \textbf{Air-gapped considerations:} offline Mermaid CLI rendering, no remote fallback.
-\end{itemize}
-\end{frame}
-
-% =====================================================================
-% 11. Backend
-% =====================================================================
-\section{Backend}
-\begin{frame}
-\frametitle{Backend}
-\begin{itemize}
-  \item \textbf{API:} \emph{placeholder} --- FastAPI endpoints.
-  \item \textbf{Reliability:} \texttt{retry.py} ErrorClass (transient / deterministic / partial), exponential backoff + jitter.
-  \item \textbf{Observability:} \emph{placeholder} --- OpenTelemetry token metrics.
-\end{itemize}
-\end{frame}
-
-% =====================================================================
-% 12. Frontend
-% =====================================================================
-\section{Frontend}
-\begin{frame}
-\frametitle{Frontend}
-\begin{itemize}
-  \item \textbf{Stack:} React 19.
-  \item \textbf{Key views:} \emph{placeholder}.
-  \item \textbf{UX flow:} \emph{placeholder}.
-\end{itemize}
-\end{frame}
 
 % ---- Closing ----
 \begin{frame}
