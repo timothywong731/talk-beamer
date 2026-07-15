@@ -487,20 +487,20 @@
 \begin{center}
 \resizebox{0.72\linewidth}{!}{%
 \begin{tikzpicture}[
-  ph/.style={draw, rounded corners=2pt, fill=yellow!25, align=center,
-             minimum width=1.9cm, minimum height=0.6cm, font=\small},
-  cache/.style={draw=earlblue, very thick, rounded corners=3pt, fill=earlblue!15,
-                align=center, minimum width=11cm, minimum height=0.7cm, font=\small},
-  arr/.style={->, >=stealth, thick},
-  rw/.style={<->, >=stealth, gray},
+  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, align=center,
+                minimum width=1.9cm, minimum height=0.6cm, text=earlblue, font=\scriptsize\bfseries},
+  core/.style={draw=earlblue, very thick, rounded corners, fill=earlblue, align=center,
+               minimum width=11cm, minimum height=0.7cm, text=white, font=\scriptsize\bfseries},
+  flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
+  rw/.style={{Latex[length=1.6mm]}-{Latex[length=1.6mm]}, earlblue!60, thick},
 ]
-  \node[ph] (d) at (0,0)    {Discovery};
-  \node[ph] (a) at (2.6,0)  {Deep\\Analysis};
-  \node[ph] (l) at (5.2,0)  {Enterprise\\Context};
-  \node[ph] (u) at (7.8,0)  {Readiness\\Questionnaire};
-  \node[ph] (r) at (10.4,0) {Reporting};
-  \draw[arr] (d) -- (a); \draw[arr] (a) -- (l); \draw[arr] (l) -- (u); \draw[arr] (u) -- (r);
-  \node[cache] (c) at (5.2,-1.5) {Shared long-term memory};
+  \node[stage] (d) at (0,0)    {Discovery};
+  \node[stage] (a) at (2.6,0)  {Deep\\Analysis};
+  \node[stage] (l) at (5.2,0)  {Enterprise\\Context};
+  \node[stage] (u) at (7.8,0)  {Readiness\\Questionnaire};
+  \node[stage] (r) at (10.4,0) {Reporting};
+  \draw[flow] (d) -- (a); \draw[flow] (a) -- (l); \draw[flow] (l) -- (u); \draw[flow] (u) -- (r);
+  \node[core] (c) at (5.2,-1.5) {Shared long-term memory};
   \foreach \n in {d,a,l,u,r} \draw[rw] (\n) -- (\n |- c.north);
 \end{tikzpicture}
 }
@@ -547,61 +547,61 @@
 \begin{center}
 \resizebox{0.99\linewidth}{!}{%
 \begin{tikzpicture}[
-  stage/.style={draw, rounded corners=2pt, fill=yellow!25, text width=1.6cm,
-                align=center, minimum height=0.7cm, inner sep=3pt, font=\small},
-  rep/.style={draw, rounded corners=2pt, fill=orange!40, text width=1.5cm,
-              align=center, minimum height=0.6cm, inner sep=2pt, font=\small},
-  io/.style={draw=earlblue, thick, rounded corners=3pt, fill=earlblue!20,
-             text width=1.4cm, align=center, minimum height=0.65cm, inner sep=2pt, font=\small},
-  final/.style={draw=orange!80!black, very thick, rounded corners=3pt, fill=yellow!55,
-                text width=1.9cm, align=center, minimum height=0.7cm, inner sep=3pt, font=\small},
-  arr/.style={->, >=stealth, thick},
-  darr/.style={->, >=stealth, dashed, gray},
+  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, text width=1.6cm,
+                align=center, minimum height=0.7cm, inner sep=3pt, text=earlblue, font=\scriptsize\bfseries},
+  rep/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, text width=1.5cm,
+              align=center, minimum height=0.6cm, inner sep=2pt, text=earlblue, font=\scriptsize},
+  io/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8,
+             text width=1.4cm, align=center, minimum height=0.65cm, inner sep=2pt, text=earlblue, font=\scriptsize\bfseries},
+  final/.style={draw=earlblue, very thick, rounded corners, fill=earlblue,
+                text width=1.9cm, align=center, minimum height=0.7cm, inner sep=3pt, text=white, font=\scriptsize\bfseries},
+  flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
+  dflow/.style={-{Latex[length=1.6mm]}, earlblue!70, dashed, thick},
 ]
   % Input group
-  \draw[earlblue!60, dashed, rounded corners=4pt, thick] (-0.95,0.15) rectangle (1.25,2.85);
-  \node[io, text width=1.9cm] (legacy) at (0.15, 2.35) {\textbf{Legacy App}};
+  \draw[earlblue!70, dashed, rounded corners=4pt, thick] (-0.95,0.15) rectangle (1.25,2.85);
+  \node[io, text width=1.9cm] (legacy) at (0.15, 2.35) {Legacy App};
   \node[io, minimum width=0.8cm, text width=0.7cm] (docs) at (-0.4, 1.35) {Docs};
   \node[io, minimum width=0.8cm, text width=0.7cm] (repo) at (0.7, 1.35) {Repo};
   % Human left
-  \draw[arr] (-2.5, 1.7) node[left, font=\normalsize\bfseries] {Human} -- (-0.95, 1.7);
+  \draw[flow] (-2.5, 1.7) node[left, font=\normalsize\bfseries, text=earlblue] {Human} -- (-0.95, 1.7);
   % Pipeline stages
   \node[stage] (da)  at (2.8,  1.7) {Doc\\Analysis};
   \node[stage] (dis) at (4.9,  1.7) {Discovery};
   \node[stage] (dep) at (7.0,  1.7) {Deep\\Analysis};
   \node[stage] (ec)  at (9.4,  1.7) {Enterprise\\Context};
-  \node[stage] (uaq) at (11.5, 1.7) {UAQ};
+  \node[stage] (uaq) at (11.5, 1.7) {Questionnaire};
   \node[stage] (rpt) at (13.6, 1.7) {Reporting};
   % Orchestration annotations
   \node[font=\scriptsize\itshape, text=earlblue] at (7.0,  2.55) {concurrent batches};
   \node[font=\scriptsize\itshape, text=earlblue] at (11.5, 2.55) {concurrent agents};
   \node[font=\scriptsize\itshape, text=earlblue] at (13.6, 2.55) {writer/reviewer};
   % Stage arrows
-  \draw[arr] (1.25, 1.7) -- (da);
-  \draw[arr] (da)  -- (dis);
-  \draw[arr] (dis) -- (dep);
-  \draw[arr] (dep) -- (ec);
-  \draw[arr] (ec)  -- (uaq);
-  \draw[arr] (uaq) -- (rpt);
+  \draw[flow] (1.25, 1.7) -- (da);
+  \draw[flow] (da)  -- (dis);
+  \draw[flow] (dis) -- (dep);
+  \draw[flow] (dep) -- (ec);
+  \draw[flow] (ec)  -- (uaq);
+  \draw[flow] (uaq) -- (rpt);
   % Report boxes
   \node[rep] (dar)  at (2.8,  0.35) {Doc\\report};
   \node[rep] (dir)  at (4.9,  0.35) {Discovery\\report};
   \node[rep] (dpr)  at (7.0,  0.35) {Deep\\report};
   \node[rep] (sdp)  at (8.7, -0.55) {Security\\context};
   \node[rep] (azr)  at (10.1,-0.55) {Cloud\\context};
-  \node[rep] (uaqr) at (11.5, 0.35) {UAQ\\report};
+  \node[rep] (uaqr) at (11.5, 0.35) {Questionnaire\\report};
   % Dashed arrows to reports
-  \draw[darr] (da)       -- (dar);
-  \draw[darr] (dis)      -- (dir);
-  \draw[darr] (dep)      -- (dpr);
-  \draw[darr] (ec.south) -- (sdp.north);
-  \draw[darr] (ec.south) -- (azr.north);
-  \draw[darr] (uaq)      -- (uaqr);
+  \draw[dflow] (da)       -- (dar);
+  \draw[dflow] (dis)      -- (dir);
+  \draw[dflow] (dep)      -- (dpr);
+  \draw[dflow] (ec.south) -- (sdp.north);
+  \draw[dflow] (ec.south) -- (azr.north);
+  \draw[dflow] (uaq)      -- (uaqr);
   % Final output
   \node[final] (out) at (15.8, 1.7) {\textbf{Assessment\\Report} $\bigstar$};
-  \draw[arr] (rpt) -- (out);
+  \draw[flow] (rpt) -- (out);
   % Human right
-  \draw[arr] (out) -- (17.5, 1.7) node[right, font=\normalsize\bfseries] {Human};
+  \draw[flow] (out) -- (17.5, 1.7) node[right, font=\normalsize\bfseries, text=earlblue] {Human};
 \end{tikzpicture}
 }
 \end{center}
@@ -627,32 +627,32 @@
 \begin{center}
 \resizebox{0.95\linewidth}{!}{%
 \begin{tikzpicture}[
-  comp/.style={draw, rounded corners=2pt, fill=yellow!25, align=center,
-               minimum width=2.2cm, minimum height=0.85cm, font=\small},
-  ext/.style={draw=earlblue, thick, rounded corners=2pt, fill=earlblue!15, align=center,
-              minimum width=2.1cm, minimum height=0.85cm, font=\small},
-  store/.style={draw=orange!80!black, thick, rounded corners=2pt, fill=orange!25, align=center,
-                minimum width=2.2cm, minimum height=0.85cm, font=\small},
-  arr/.style={<->, >=stealth, thick},
-  oarr/.style={->, >=stealth, thick},
+  io/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, align=center,
+             minimum width=2.1cm, minimum height=0.85cm, text=earlblue, font=\scriptsize\bfseries},
+  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, align=center,
+                minimum width=2.2cm, minimum height=0.85cm, text=earlblue, font=\scriptsize\bfseries},
+  core/.style={draw=earlblue, very thick, rounded corners, fill=earlblue, align=center,
+               minimum width=2.2cm, minimum height=0.85cm, text=white, font=\scriptsize\bfseries},
+  flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
+  biflow/.style={{Latex[length=2mm]}-{Latex[length=2mm]}, earlblue, very thick},
 ]
-  \node[ext]   (user)    at (0, 3)     {User};
-  \node[comp]  (ui)      at (3, 3)     {Web UI};
-  \node[comp]  (api)     at (6, 3)     {API service};
-  \node[comp]  (queue)   at (9, 3)     {Queue};
-  \node[comp]  (worker)  at (9, 1)     {Worker\\(pipeline engine)};
-  \node[store] (storage) at (6, 1)     {Storage\\(docs \& reports)};
-  \node[ext]   (search)  at (12.3, 2)  {Search index};
-  \node[ext]   (llm)     at (12.3, 0)  {Model service};
+  \node[io]    (user)    at (0, 3)     {User};
+  \node[stage] (ui)      at (3, 3)     {Web UI};
+  \node[stage] (api)     at (6, 3)     {API service};
+  \node[stage] (queue)   at (9, 3)     {Queue};
+  \node[core]  (worker)  at (9, 1)     {Worker\\(pipeline engine)};
+  \node[io]    (storage) at (6, 1)     {Storage\\(docs \& reports)};
+  \node[io]    (search)  at (12.3, 2)  {Search index};
+  \node[io]    (llm)     at (12.3, 0)  {Model service};
 
-  \draw[arr]  (user)   -- (ui);
-  \draw[arr]  (ui)     -- (api);
-  \draw[arr]  (api)    -- (queue);
-  \draw[oarr] (api)    -- (storage);
-  \draw[oarr] (queue)  -- (worker);
-  \draw[arr]  (worker) -- (storage);
-  \draw[oarr] (worker) -- (search);
-  \draw[oarr] (worker) -- (llm);
+  \draw[biflow] (user)   -- (ui);
+  \draw[biflow] (ui)     -- (api);
+  \draw[biflow] (api)    -- (queue);
+  \draw[flow]   (api)    -- (storage);
+  \draw[flow]   (queue)  -- (worker);
+  \draw[biflow] (worker) -- (storage);
+  \draw[flow]   (worker) -- (search);
+  \draw[flow]   (worker) -- (llm);
 \end{tikzpicture}
 }
 \end{center}
