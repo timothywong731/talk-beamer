@@ -127,8 +127,8 @@
     \item \textbf{Data Preprocessing}
     \item \textbf{Inside Agentic Retrieval}
     \item \textbf{Agentic Orchestration}
-    \item \textbf{Agents' Memory}
-    \item \textbf{Agents' Tools}
+    \item \textbf{Agent Memory}
+    \item \textbf{Agent Tools}
     \item \textbf{E2E Orchestration Phases}
   \end{enumerate}
   \item \textbf{Infrastructure \& Backend}
@@ -460,11 +460,11 @@
 \end{frame}
 
 % =====================================================================
-% 5. Agents' Memory
+% 5. Agent Memory
 % =====================================================================
-\section{Agents' Memory}
+\section{Agent Memory}
 \begin{frame}
-\frametitle{Agents' Memory}
+\frametitle{Agent Memory}
 \small
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
@@ -495,11 +495,11 @@
   flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
   rw/.style={{Latex[length=1.6mm]}-{Latex[length=1.6mm]}, earlblue!60, thick},
 ]
-  \node[stage] (d) at (0,0)    {Discovery};
-  \node[stage] (a) at (2.6,0)  {Deep\\Analysis};
-  \node[stage] (l) at (5.2,0)  {Enterprise\\Context};
-  \node[stage] (u) at (7.8,0)  {Readiness\\Questionnaire};
-  \node[stage] (r) at (10.4,0) {Reporting};
+  \node[stage] (d) at (0,0)    {Phase 1};
+  \node[stage] (a) at (2.6,0)  {Phase 2};
+  \node[stage] (l) at (5.2,0)  {...};
+  \node[stage] (u) at (7.8,0)  {...};
+  \node[stage] (r) at (10.4,0) {Phase N};
   \draw[flow] (d) -- (a); \draw[flow] (a) -- (l); \draw[flow] (l) -- (u); \draw[flow] (u) -- (r);
   \node[core] (c) at (5.2,-1.5) {Shared long-term memory};
   \foreach \n in {d,a,l,u,r} \draw[rw] (\n) -- (\n |- c.north);
@@ -510,30 +510,45 @@
 \end{frame}
 
 % =====================================================================
-% 6. Agents' Tools
+% 6. Agent Tools
 % =====================================================================
-\section{Agents' Tools}
+\section{Agent Tools}
 \begin{frame}
-\frametitle{Agents' Tools}
-\small
+\frametitle{Agent Tools}
+\footnotesize
 \begin{columns}[T]
-\begin{column}{0.5\textwidth}
-  \textbf{What tools are available}
+\begin{column}{0.55\textwidth}
+  \textbf{Tools available to each agent}
   \begin{itemize}\setlength\itemsep{2pt}
-    \item \textbf{File access:} browse and read the codebase and documents.
-    \item \textbf{Knowledge retrieval:} ask questions over indexed documents; answers cite their sources.
-    \item \textbf{Enterprise knowledge:} search organisational guidance (security, cloud, DevOps standards).
-    \item \textbf{Diagrams:} create, validate and fix architecture diagrams, rendered offline.
+    \item \textbf{Memory:} the agent keeps long-term memory as a shared file on disk, loading past findings at start-up and writing new results back after each step so knowledge persists across the run.
+    \item \textbf{File access:} read the codebase and documents.
+    \item \textbf{Knowledge retrieval:} ask questions over indexed documents, with cited sources.
+    \item \textbf{Enterprise knowledge:} search organisational security, cloud and DevOps guidance.
+    \item \textbf{Diagrams:} create, validate and fix architecture diagrams offline.
   \end{itemize}
 \end{column}
-\begin{column}{0.5\textwidth}
-  \textbf{How agents use them}
-  \begin{itemize}\setlength\itemsep{2pt}
-    \item Each agent is given only the tools relevant to its task.
-    \item Tools turn raw inputs into structured, grounded findings.
-    \item Grounded retrieval keeps answers anchored to real evidence.
-    \item Tool use is logged for observability and cost tracking.
-  \end{itemize}
+\begin{column}{0.45\textwidth}
+  \centering
+  \vspace{0.15cm}
+  \resizebox{0.98\linewidth}{!}{%
+  \begin{tikzpicture}[
+    core/.style={draw=earlblue, very thick, rounded corners, fill=earlblue, align=center,
+                 text=white, font=\scriptsize\bfseries, minimum size=1.1cm},
+    tool/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, align=center,
+                 text=earlblue, font=\scriptsize\bfseries, minimum width=1.5cm, minimum height=0.55cm},
+    spoke/.style={-{Latex[length=1.6mm]}, earlblue, thick},
+  ]
+    \node[core] (ag) at (0,0) {Agent};
+    \node[tool] (mem)    at (90:2.4)   {Memory};
+    \node[tool] (files)  at (30:2.4)   {Files};
+    \node[tool] (search) at (-30:2.4)  {Search};
+    \node[tool] (ground) at (-90:2.4)  {Grounding};
+    \node[tool] (diag)   at (-150:2.4) {Diagrams};
+    \node[tool] (docs)   at (150:2.4)  {Enterprise\\docs};
+    \foreach \t in {mem,files,search,ground,diag,docs} \draw[spoke] (ag) -- (\t);
+  \end{tikzpicture}}
+  \\[0.2cm]
+  {\footnotesize\textit{Each agent is given only the tools it needs.}}
 \end{column}
 \end{columns}
 \end{frame}
