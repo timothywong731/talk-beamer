@@ -1,7 +1,7 @@
 \documentclass{beamer}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds}
 
 % -- Blue theme colours --
 \definecolor{earlblue}{RGB}{0,63,114}
@@ -27,7 +27,7 @@
 }
 
 %Information to be included in the title page:
-\title{Agentic AI System for Enterprise Cloud Migration}
+\title{Agentic AI System for Enterprise Cloud Migrations}
 \newcommand{\presenters}{Timothy Wong \quad $\bullet$ \quad Alessandro Abati}
 \institute{London Stock Exchange Group (LSEG)}
 \date{7 Oct 2026}
@@ -87,7 +87,8 @@
   \\[0.3cm]
   \textbf{Alessandro Abati} \\  
   {\footnotesize
-  placeholder}
+  Alessandro is an AI Engineer at LSEG, specialising in agentic AI systems for enterprise applications. 
+  A newbie to EARL, but excited to share his work.}
 \end{column}
 \end{columns}
 \end{frame}
@@ -95,29 +96,66 @@
 % ---- About LSEG ----
 \begin{frame}
 \frametitle{About LSEG}
+
+\vspace{-0.1cm}
 \begin{columns}[T]
-\begin{column}{0.38\textwidth}
+% -- Left: logo + one-liner + scale stat --
+\begin{column}{0.33\textwidth}
   \centering
-  \vspace{0.6cm}
+  \vspace{0.35cm}
   \IfFileExists{assets/lseg.png}{%
-    \includegraphics[width=\linewidth]{assets/lseg.png}%
+    \includegraphics[width=0.9\linewidth]{assets/lseg.png}%
   }{%
     \textbf{\large London Stock\\[2pt]Exchange Group}%
   }
-  \small
-  LSEG is a leading financial markets infrastructure and data provider operating connected businesses to serve customers across the entire financial markets value chain.
-  
+  \\[0.35cm]
+  {\footnotesize A leading global financial markets infrastructure and data provider - powering the entire markets value chain.}
+  \\[0.4cm]
+  \begin{tikzpicture}
+    \node[draw=earlblue,very thick,rounded corners,fill=earlblue!8,
+      minimum width=3.6cm,minimum height=1.2cm,align=center,text=earlblue,inner sep=4pt]
+      {{\large\bfseries $\sim$26{,}000}\\[1pt]{\scriptsize employees worldwide}};
+  \end{tikzpicture}
 \end{column}
-\begin{column}{0.58\textwidth}
-  \small
-  \vspace{0.4cm}
-  \begin{itemize}
-    \item \textbf{London Stock Exchange} 
-    \item \textbf{FTSE Russell:} Indices across asset classes, including FTSE 100, FTSE 250, Russell 2000, and ESG indices.
-    \item \textbf{Data \& Analytics:} Workspace platform, pricing, reference data.
-    \item \textbf{Clearing:} LCH, multi-asset class clearing house.
-    \item \textbf{Scale:} \textasciitilde{}26\,000 employees across many countries.
-  \end{itemize}
+% -- Right: business divisions as a card grid + where-we-sit callout --
+\begin{column}{0.64\textwidth}
+\begin{center}
+\resizebox{0.9\linewidth}{!}{%
+\begin{tikzpicture}[node distance=0.35cm]
+  \tikzstyle{card}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    text width=3.5cm,align=left,minimum height=1.25cm,inner sep=5pt,
+    text=earlblue,font=\scriptsize]
+
+  \node[card] (cm)  {\textbf{Capital Markets}\\ London Stock Exchange \& global trading venues};
+  \node[card,right=of cm] (fr) {\textbf{FTSE Russell}\\ Indices across asset classes -- FTSE 100/250, Russell 2000, ESG};
+  \node[card,below=of cm] (da) {\textbf{Data \& Analytics}\\ Workspace platform, pricing \& reference data};
+  \node[card,below=of fr] (pt) {\textbf{Post Trade}\\ LCH -- multi-asset class clearing house};
+\end{tikzpicture}%
+}
+\end{center}
+
+\vspace{0.15cm}
+\begin{block}{\footnotesize Where we sit}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}
+  % -- Title of the silo --
+  \node[anchor=north,font=\small\bfseries,text=earlblue] (cpetitle) at (0,0)
+    {Infrastructure \& Cloud};
+  % -- Inner: our department, highlighted, with description --
+  \node[draw=earlblue,very thick,rounded corners,fill=earlblue,text=white,
+    align=left,font=\footnotesize,text width=8cm,inner sep=8pt,
+    below=0.15cm of cpetitle] (ic)
+    {\textbf{Cloud Product Engineering (CPE)}\\[3pt]
+     World-class cloud foundation \& services and developer experience, empowering LSEG engineers to innovate and deliver business value.};
+  % -- Outer silo drawn behind, auto-fitted around title + inner box --
+  \begin{scope}[on background layer]
+    \node[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+      fit=(cpetitle)(ic),inner sep=7pt] {};
+  \end{scope}
+\end{tikzpicture}%
+}
+\end{block}
 \end{column}
 \end{columns}
 \end{frame}
@@ -220,6 +258,7 @@ manual migration effort into an AI-assisted one.
 
 \vspace{-0.15cm}
 \begin{center}
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[node distance=0.4cm,every node/.style={transform shape}]
   \tikzstyle{src}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
     minimum width=1.8cm,minimum height=0.55cm,align=center,text=earlblue,font=\scriptsize\bfseries]
@@ -242,7 +281,10 @@ manual migration effort into an AI-assisted one.
   % -- Right column: markdown -> search -> AI-ready (vertical chain) --
   \node[stage,right=1.1cm of cu] (md) {Clean, structured\\ Markdown};
   \node[stage,below=of md] (search) {Azure AI Search\\ index};
-  \node[stage,below=of search,fill=earlblue,text=white] (ready) {AI-ready\\ knowledge base};
+  \node[stage,right=1.1cm of search,fill=earlblue,text=white] (ready) {AI-ready\\ knowledge base};
+
+  % -- Branch: markdown -> documentation summary --
+  \node[stage,right=1.1cm of md] (summary) {Documentation\\ Summary};
 
   % -- Flows --
   \draw[flow] (docs.east)  -- (cu.west);
@@ -250,8 +292,10 @@ manual migration effort into an AI-assisted one.
   \draw[flow] (media.east) -- (cu.west);
   \draw[flow] (cu.east) -- (md.west);
   \draw[flow] (md.south) -- (search.north);
-  \draw[flow] (search.south) -- (ready.north);
-\end{tikzpicture}
+  \draw[flow] (search.east) -- (ready.west);
+  \draw[flow] (md.east) -- (summary.west);
+\end{tikzpicture}%
+}
 \end{center}
 
 \vspace{-0.1cm}
@@ -503,8 +547,6 @@ manual migration effort into an AI-assisted one.
 \begin{block}{\footnotesize What Round-Robin overrides}
 {\scriptsize
 \texttt{SelectNextAgent} - picks the next agent by a fixed \textbf{cyclic order} (a round-robin cursor).
-\vspace{2pt}
-\par{\color{earlblue}\itshape Everything else is inherited from the base \texttt{GroupChatManager}.}
 }
 \end{block}
 \end{column}
@@ -513,7 +555,7 @@ manual migration effort into an AI-assisted one.
 \vspace{0.55cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Same pattern:} reuses the \emph{Group Chat} orchestration with the \texttt{RoundRobinGroupChatManager} flavour - no custom manager logic needed.
+  \item \textbf{\color{earlblue}Same pattern:} reuses the \emph{Group Chat} orchestration.
   \item \textbf{\color{earlblue}Deterministic turns:} Writer drafts, Reviewer critiques, alternating for a fixed number of rounds (writer gets the last word).
   \item \textbf{\color{earlblue}Benefits:} a built-in quality gate - iterative critique lifts output quality with predictable turns and no custom manager logic.
 \end{itemize}
