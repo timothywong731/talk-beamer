@@ -3,7 +3,7 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 
-% ---- Blue theme colours ----
+% -- Blue theme colours --
 \definecolor{earlblue}{RGB}{0,63,114}
 
 \setbeamercolor{frametitle}{bg=earlblue,fg=white}
@@ -12,6 +12,11 @@
 \setbeamercolor{normal text}{fg=black}
 \setbeamercolor{footline}{bg=earlblue,fg=white}
 \setbeamertemplate{navigation symbols}{}
+
+% Rounded, themed blocks (used to highlight callout boxes on content slides)
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{bg=earlblue,fg=white}
+\setbeamercolor{block body}{bg=earlblue!8,fg=black}
 
 % Blue footline bar with logo bottom-right, used on content slides
 \setbeamertemplate{footline}{%
@@ -29,7 +34,7 @@
 
 \begin{document}
 
-% ---- Cover slide: full blue background, logo centred at bottom ----
+% -- Cover slide: full blue background, logo centred at bottom --
 {
 \setbeamertemplate{footline}{}
 \usebackgroundtemplate{%
@@ -117,7 +122,7 @@
 \end{columns}
 \end{frame}
 
-% ---- Agenda ----
+% -- Agenda --
 \begin{frame}
 \frametitle{Agenda}
 \begin{enumerate}
@@ -142,12 +147,68 @@
 \section{Business Requirements and Context}
 \begin{frame}
 \frametitle{Business Requirements and Context}
+Co-Migrate supports the applications' journey to the cloud, turning a slow,
+manual migration effort into an AI-assisted one.
+\vspace{-0.3cm}
+\begin{columns}[T]
+% -- Left: migration patterns --
+\begin{column}{0.40\textwidth}
+\begin{center}
+{\small\bfseries\color{earlblue}Migration patterns}\\[0.15cm]
+\begin{tikzpicture}[scale=0.5,every node/.style={transform shape}]
+  \tikzstyle{env}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    minimum width=2.2cm,minimum height=1cm,align=center,text=earlblue,font=\small\bfseries]
+  % Source environments on the left
+  \node[env] (onprem) at (0,0.8) {On-prem};
+  \node[env] (cloudsrc) at (0,-0.8) {Cloud};
+  % Central junction node
+  \node[circle,draw=earlblue,fill=earlblue,minimum size=3mm,inner sep=0pt] (hub) at (2.2,0) {};
+  % Destination cloud on the right
+  \node[env] (dst) at (5,0) {Cloud};
+  % Sources meet at the hub
+  \draw[earlblue,very thick] (onprem.east) -- (hub);
+  \draw[earlblue,very thick] (cloudsrc.east) -- (hub);
+  % Hub points to the destination cloud
+  \draw[-{Latex[length=3mm]},earlblue,very thick] (hub) -- (dst.west)
+    node[midway,above,text=earlblue,font=\scriptsize\bfseries] {Migration};
+\end{tikzpicture}
+\end{center}
+\end{column}
+% -- Right: codebase to discovery report pipeline --
+\begin{column}{0.58\textwidth}
+\begin{center}
+{\small\bfseries\color{earlblue}From codebase to discovery report}\\[0.15cm]
+\begin{tikzpicture}[scale=0.7,every node/.style={transform shape},node distance=0.35cm]
+  \tikzstyle{box}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
+    minimum width=2cm,minimum height=1.5cm,align=center,text=earlblue,font=\scriptsize\bfseries]
+  \tikzstyle{core}=[draw=earlblue,thick,rounded corners,fill=earlblue,
+    minimum width=2cm,minimum height=1.5cm,align=center,text=white,font=\scriptsize\bfseries]
+  \node[box] (input) {Application\\ codebase \&\\ documentation};
+  \node[core,right=of input] (core) {Co-Migrate};
+  \node[box,right=of core] (report) {Discovery\\ report};
+  \draw[-{Latex[length=3mm]},earlblue,very thick] (input) -- (core);
+  \draw[-{Latex[length=3mm]},earlblue,very thick] (core) -- (report);
+\end{tikzpicture}
+\end{center}
+\end{column}
+\end{columns}
+
+\vspace{0.1cm}
+{\small
 \begin{itemize}
-  \item \textbf{Problem:} \emph{placeholder} --- what makes enterprise cloud migration slow, risky and manual.
-  \item \textbf{Goal:} \emph{placeholder} --- automate discovery, analysis and recommendation with AI agents.
-  \item \textbf{Stakeholders \& scope:} \emph{placeholder}.
-  \item \textbf{Success criteria:} \emph{placeholder}.
+  \item \textbf{Discovery first:} every migration starts with a discovery stage to map dependencies and spot risks.
 \end{itemize}
+}
+
+\vspace{0.05cm}
+\begin{block}{\small The problems Co-Migrate solves}
+{\footnotesize
+\begin{itemize}
+  \item \textbf{\color{earlblue}The bottleneck:} teams can spend \colorbox{earlblue!15}{up to \textbf{53 weeks}} on discovery alone - slow, manual and costly.
+  \item \textbf{Risk matters early:} spotting risks and complexity up front is key to a successful migration.
+\end{itemize}
+}
+\end{block}
 \end{frame}
 
 % =====================================================================
@@ -666,7 +727,7 @@
 \end{frame}
 
 
-% ---- Closing ----
+% -- Closing --
 \begin{frame}
 \frametitle{Questions}
 \begin{center}
