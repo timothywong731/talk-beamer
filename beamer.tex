@@ -702,25 +702,22 @@ manual migration effort into an AI-assisted one.
 \begin{frame}
 \frametitle{Infrastructure \& Backend}
 \begin{center}
-\resizebox{0.95\linewidth}{!}{%
+\resizebox{0.9\linewidth}{!}{%
 \begin{tikzpicture}[
-  io/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, align=center,
-             minimum width=2.1cm, minimum height=0.85cm, text=earlblue, font=\scriptsize\bfseries},
-  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, align=center,
-                minimum width=2.2cm, minimum height=0.85cm, text=earlblue, font=\scriptsize\bfseries},
-  core/.style={draw=earlblue, very thick, rounded corners, fill=earlblue, align=center,
-               minimum width=2.2cm, minimum height=0.85cm, text=white, font=\scriptsize\bfseries},
+  azicon/.style={align=center, font=\scriptsize\bfseries, text=earlblue, inner sep=3pt},
+  actor/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, align=center,
+                minimum width=1.5cm, minimum height=0.8cm, text=earlblue, font=\scriptsize\bfseries},
   flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
   biflow/.style={{Latex[length=2mm]}-{Latex[length=2mm]}, earlblue, very thick},
 ]
-  \node[io]    (user)    at (0, 3)     {User};
-  \node[stage] (ui)      at (3, 3)     {Web UI};
-  \node[stage] (api)     at (6, 3)     {API service};
-  \node[stage] (queue)   at (9, 3)     {Queue};
-  \node[core]  (worker)  at (9, 1)     {Worker\\(pipeline engine)};
-  \node[io]    (storage) at (6, 1)     {Storage\\(docs \& reports)};
-  \node[io]    (search)  at (12.3, 2)  {Search index};
-  \node[io]    (llm)     at (12.3, 0)  {Model service};
+  \node[actor]  (user)    at (0, 3)     {User};
+  \node[azicon] (ui)      at (3, 3)     {\includegraphics[height=0.9cm]{assets/azure/static-apps.pdf}\\ Web UI};
+  \node[azicon] (api)     at (6, 3)     {\includegraphics[height=0.9cm]{assets/azure/container-apps.pdf}\\ API service};
+  \node[azicon] (queue)   at (9, 3)     {\includegraphics[height=0.9cm]{assets/azure/storage-queue.pdf}\\ Queue};
+  \node[azicon] (worker)  at (9, 0.9)   {\includegraphics[height=0.9cm]{assets/azure/container-apps.pdf}\\ Worker};
+  \node[azicon] (storage) at (6, 0.9)   {\includegraphics[height=0.9cm]{assets/azure/storage-accounts.pdf}\\ Storage};
+  \node[azicon] (search)  at (12.4, 2)  {\includegraphics[height=0.9cm]{assets/azure/cognitive-search.pdf}\\ Search index};
+  \node[azicon] (llm)     at (12.4, 0)  {\includegraphics[height=0.9cm]{assets/azure/azure-openai.pdf}\\ Model service};
 
   \draw[biflow] (user)   -- (ui);
   \draw[biflow] (ui)     -- (api);
