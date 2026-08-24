@@ -157,6 +157,7 @@
 \frametitle{Agenda}
 \begin{enumerate}
   \item \textbf{Business Requirements and Context}
+  \item \textbf{E2E Orchestration Phases}
   \item \textbf{Agentic Technical Deep Dive}
   \begin{enumerate}
     \item \textbf{Data Preprocessing}
@@ -164,7 +165,6 @@
     \item \textbf{Agentic Orchestration}
     \item \textbf{Agent Memory}
     \item \textbf{Agent Tools}
-    \item \textbf{E2E Orchestration Phases}
   \end{enumerate}
   \item \textbf{Infrastructure \& Backend}
 \end{enumerate}
@@ -177,15 +177,31 @@
 \section{Business Requirements and Context}
 \begin{frame}
 \frametitle{Business Requirements and Context}
-Co-Migrate supports the applications' journey to the cloud, turning a slow,
-manual migration effort into an AI-assisted one.
-\vspace{-0.3cm}
+Migrating enterprise applications to the cloud means \textbf{understanding them
+first}!
+
+\vspace{0.1cm}
+\begin{block}{\small The challenge}
+{\footnotesize
+\begin{itemize}\setlength\itemsep{2pt}
+  \item \textbf{\color{earlblue}Massive legacy estate:} \colorbox{earlblue!15}{millions of lines of code}, decades in the making.
+  \item \textbf{\color{earlblue}Scarce knowledge:} documentation is thin or outdated, and app-team experts have often left.
+  \item \textbf{\color{earlblue}Slow discovery:} mapping dependencies and risks by hand takes \colorbox{earlblue!15}{weeks} per app.
+\end{itemize}
+}
+\end{block}
+
+\vspace{0.02cm}
+{\small\centering
+\textbf{\color{earlblue}Co-Migrate} is a multi-agent system that makes the discovery AI-assisted.\par}
+
+\vspace{-0.5cm}
 \begin{columns}[T]
 % -- Left: migration patterns --
 \begin{column}{0.40\textwidth}
 \begin{center}
-{\small\bfseries\color{earlblue}Migration patterns}\\[0.15cm]
-\begin{tikzpicture}[scale=0.5,every node/.style={transform shape}]
+{\small\bfseries\color{earlblue}Migration patterns}\\[0.05cm]
+\begin{tikzpicture}[scale=0.45,every node/.style={transform shape}]
   \tikzstyle{env}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
     minimum width=2.2cm,minimum height=1cm,align=center,text=earlblue,font=\small\bfseries]
   % Source environments on the left
@@ -207,8 +223,8 @@ manual migration effort into an AI-assisted one.
 % -- Right: codebase to discovery report pipeline --
 \begin{column}{0.58\textwidth}
 \begin{center}
-{\small\bfseries\color{earlblue}From codebase to discovery report}\\[0.15cm]
-\begin{tikzpicture}[scale=0.7,every node/.style={transform shape},node distance=0.35cm]
+{\small\bfseries\color{earlblue}From codebase to discovery report}\\[0.05cm]
+\begin{tikzpicture}[scale=0.62,every node/.style={transform shape},node distance=0.35cm]
   \tikzstyle{box}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
     minimum width=2cm,minimum height=1.5cm,align=center,text=earlblue,font=\scriptsize\bfseries]
   \tikzstyle{core}=[draw=earlblue,thick,rounded corners,fill=earlblue,
@@ -222,23 +238,87 @@ manual migration effort into an AI-assisted one.
 \end{center}
 \end{column}
 \end{columns}
+\end{frame}
 
-\vspace{0.1cm}
-{\small
-\begin{itemize}
-  \item \textbf{Discovery first:} every migration starts with a discovery stage to map dependencies and spot risks.
-\end{itemize}
+% =====================================================================
+% E2E Orchestration Phases
+% =====================================================================
+\section{E2E Orchestration Phases}
+\begin{frame}
+\frametitle{E2E Orchestration Phases}
+\vspace{-0.2cm}
+\begin{center}
+\resizebox{0.99\linewidth}{!}{%
+\begin{tikzpicture}[
+  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, text width=1.6cm,
+                align=center, minimum height=0.7cm, inner sep=3pt, text=earlblue, font=\scriptsize\bfseries},
+  rep/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, text width=1.5cm,
+              align=center, minimum height=0.6cm, inner sep=2pt, text=earlblue, font=\scriptsize},
+  io/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8,
+             text width=1.4cm, align=center, minimum height=0.65cm, inner sep=2pt, text=earlblue, font=\scriptsize\bfseries},
+  final/.style={draw=earlblue, very thick, rounded corners, fill=earlblue,
+                text width=1.9cm, align=center, minimum height=0.7cm, inner sep=3pt, text=white, font=\scriptsize\bfseries},
+  flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
+  dflow/.style={-{Latex[length=1.6mm]}, earlblue!70, dashed, thick},
+]
+  % Input group
+  \draw[earlblue!70, dashed, rounded corners=4pt, thick] (-0.95,0.15) rectangle (1.25,2.85);
+  \node[io, text width=1.9cm] (legacy) at (0.15, 2.35) {Legacy App};
+  \node[io, minimum width=0.8cm, text width=0.7cm] (docs) at (-0.4, 1.35) {Docs};
+  \node[io, minimum width=0.8cm, text width=0.7cm] (repo) at (0.7, 1.35) {Repo};
+  % Human left
+  \draw[flow] (-2.5, 1.7) node[left, font=\normalsize\bfseries, text=earlblue] {Human} -- (-0.95, 1.7);
+  % Pipeline stages
+  \node[stage] (da)  at (2.8,  1.7) {Doc\\Analysis};
+  \node[stage] (dis) at (4.9,  1.7) {Discovery};
+  \node[stage] (dep) at (7.0,  1.7) {Deep\\Analysis};
+  \node[stage] (ec)  at (9.4,  1.7) {Enterprise\\Context};
+  \node[stage] (uaq) at (11.5, 1.7) {Questionnaire};
+  \node[stage] (rpt) at (13.6, 1.7) {Reporting};
+  % Orchestration annotations
+  \node[font=\scriptsize\itshape, text=earlblue] at (7.0,  2.55) {concurrent batches};
+  \node[font=\scriptsize\itshape, text=earlblue] at (11.5, 2.55) {concurrent agents};
+  \node[font=\scriptsize\itshape, text=earlblue] at (13.6, 2.55) {writer/reviewer};
+  % Stage arrows
+  \draw[flow] (1.25, 1.7) -- (da);
+  \draw[flow] (da)  -- (dis);
+  \draw[flow] (dis) -- (dep);
+  \draw[flow] (dep) -- (ec);
+  \draw[flow] (ec)  -- (uaq);
+  \draw[flow] (uaq) -- (rpt);
+  % Report boxes
+  \node[rep] (dar)  at (2.8,  0.35) {Doc\\report};
+  \node[rep] (dir)  at (4.9,  0.35) {Discovery\\report};
+  \node[rep] (dpr)  at (7.0,  0.35) {Deep\\report};
+  \node[rep] (sdp)  at (8.7, -0.55) {Security\\context};
+  \node[rep] (azr)  at (10.1,-0.55) {Cloud\\context};
+  \node[rep] (uaqr) at (11.5, 0.35) {Questionnaire\\report};
+  % Dashed arrows to reports
+  \draw[dflow] (da)       -- (dar);
+  \draw[dflow] (dis)      -- (dir);
+  \draw[dflow] (dep)      -- (dpr);
+  \draw[dflow] (ec.south) -- (sdp.north);
+  \draw[dflow] (ec.south) -- (azr.north);
+  \draw[dflow] (uaq)      -- (uaqr);
+  % Final output
+  \node[final] (out) at (15.8, 1.7) {\textbf{Assessment\\Report} $\bigstar$};
+  \draw[flow] (rpt) -- (out);
+  % Human right
+  \draw[flow] (out) -- (17.5, 1.7) node[right, font=\normalsize\bfseries, text=earlblue] {Human};
+\end{tikzpicture}
 }
-
+\end{center}
 \vspace{0.05cm}
-\begin{block}{\small The problems Co-Migrate solves}
-{\footnotesize
-\begin{itemize}
-  \item \textbf{\color{earlblue}The bottleneck:} teams can spend \colorbox{earlblue!15}{up to several weeks} on discovery alone - slow, manual and costly.
-  \item \textbf{Risk matters early:} spotting risks and complexity up front is key to a successful migration.
+{\footnotesize\textit{Inputs (documents \& code) enter on the left; each phase records its findings and passes context forward.}}
+\vspace{0.15cm}
+\footnotesize
+\begin{itemize}\setlength\itemsep{1pt}
+  \item \textbf{Discovery:} group the code and documents into logical components. \textit{(Output: a map of the system.)}
+  \item \textbf{Deep Analysis:} assess each component's migration readiness, in parallel. \textit{(Output: per-component findings.)}
+  \item \textbf{Enterprise Context:} apply organisational security and cloud standards. \textit{(Output: policy-aligned recommendations.)}
+  \item \textbf{Readiness Questionnaire:} answer a standard cloud-readiness questionnaire. \textit{(Output: structured answers.)}
+  \item \textbf{Reporting:} consolidate and review all findings. \textit{(Output: the final assessment report.)}
 \end{itemize}
-}
-\end{block}
 \end{frame}
 
 % =====================================================================
@@ -248,7 +328,7 @@ manual migration effort into an AI-assisted one.
 \begin{frame}
 \frametitle{Data Preprocessing - Making Documentation AI-Ready}
 
-\vspace{-0.15cm}
+\vfill
 \begin{center}
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[node distance=0.4cm,every node/.style={transform shape}]
@@ -290,14 +370,15 @@ manual migration effort into an AI-assisted one.
 }
 \end{center}
 
-\vspace{-0.1cm}
+\vspace{0.2cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Content Understanding:} one analyzer for \emph{any} modality - OCR, layout, tables and figure descriptions turn messy files into clean Markdown.
-  \item \textbf{\color{earlblue}Make all data accessible:} charts, diagrams and scans become searchable text, so nothing is lost to downstream agents.
-  \item \textbf{\color{earlblue}Azure AI Search:} content is chunked and indexed into an AI-ready knowledge base for agentic retrieval.
+  \item \textbf{\color{earlblue}One analyzer, any modality:} OCR, layout, tables and figure descriptions extract meaning from otherwise unusable files.
+  \item \textbf{\color{earlblue}Nothing lost:} charts, diagrams and scans become searchable text, not dead pixels the agents can't read.
+  \item \textbf{\color{earlblue}Ready for retrieval:} content is chunked and embedded, so agents can query it downstream.
 \end{itemize}
 }
+\vfill
 \end{frame}
 
 % =====================================================================
@@ -359,8 +440,8 @@ manual migration effort into an AI-assisted one.
 {\footnotesize
 \begin{itemize}
   \item \textbf{\color{earlblue}Beyond classic RAG:} handles multi-part questions, chat context, typos and paraphrasing that a single query can't.
-  \item \textbf{\color{earlblue}Query planning:} an LLM breaks the query down into focused subqueries that run \emph{in parallel}, each semantically reranked.
-  \item \textbf{\color{earlblue}Grounded output:} best results are merged into one response with source citations and an activity log for agents.
+  \item \textbf{\color{earlblue}Why decompose:} one messy question becomes several focused searches --- far better recall than a single lookup.
+  \item \textbf{\color{earlblue}Traceable:} every answer carries source citations plus an activity log agents can audit.
 \end{itemize}
 }
 \end{frame}
@@ -415,9 +496,9 @@ manual migration effort into an AI-assisted one.
 \vspace{0.1cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Framework:} Microsoft \textbf{Semantic Kernel} agent orchestration, tailored to our use case.
-  \item \textbf{\color{earlblue}Two patterns:} \emph{Group Chat} (1 manager + 1 ReAct agent, custom termination) and \emph{Concurrent} (parallel, per-repo agents).
-  \item \textbf{\color{earlblue}Writer/Reviewer} is a \emph{Round-Robin} flavour of Group Chat - same orchestration, alternating turns.
+  \item \textbf{\color{earlblue}Framework:} built on Microsoft \textbf{Semantic Kernel}, tailored to our use case.
+  \item \textbf{\color{earlblue}Two base patterns:} Group Chat (manager + one ReAct agent) and Concurrent (one agent per repo) --- each detailed next.
+  \item \textbf{\color{earlblue}One reused engine:} Writer/Reviewer is just Group Chat with turns taken in a fixed order.
 \end{itemize}
 }
 \end{frame}
@@ -456,9 +537,8 @@ manual migration effort into an AI-assisted one.
 \vspace{0.05cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Our setup:} \emph{one} manager coordinating a \emph{single} ReAct agent - not a multi-agent debate.
-  \item \textbf{\color{earlblue}Why a manager:} a ReAct agent's reason--act loop is trained to stop early; the manager inspects its results and \emph{re-triggers} the loop when the task isn't complete.
-  \item \textbf{\color{earlblue}Net effect:} a custom termination strategy on top of the agent's own reason--act loop.
+  \item \textbf{\color{earlblue}Not a debate:} just \emph{one} manager over a \emph{single} ReAct agent.
+  \item \textbf{\color{earlblue}Why a manager:} a ReAct agent's reason--act loop is trained to stop early; the manager inspects its results and \emph{re-triggers} it when the task isn't complete.
 \end{itemize}
 }
 \end{frame}
@@ -503,9 +583,8 @@ manual migration effort into an AI-assisted one.
 \vspace{0.05cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Our setup:} the task fans out to one agent \emph{per repo}, all running in parallel.
-  \item \textbf{\color{earlblue}No aggregation:} results are \emph{not} combined - each agent only needs its own repo's context.
-  \item \textbf{\color{earlblue}Benefits:} parallelism for speed, plus clean isolation - no cross-repo context bleed.
+  \item \textbf{\color{earlblue}Why no merge:} each agent only needs its own repo's context, so results stay separate by design.
+  \item \textbf{\color{earlblue}Benefits:} parallelism for speed, plus clean isolation --- no cross-repo context bleed.
 \end{itemize}
 }
 \end{frame}
@@ -547,9 +626,8 @@ manual migration effort into an AI-assisted one.
 \vspace{0.55cm}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}Same pattern:} reuses the \emph{Group Chat} orchestration.
   \item \textbf{\color{earlblue}Deterministic turns:} Writer drafts, Reviewer critiques, alternating for a fixed number of rounds (writer gets the last word).
-  \item \textbf{\color{earlblue}Benefits:} a built-in quality gate - iterative critique lifts output quality with predictable turns and no custom manager logic.
+  \item \textbf{\color{earlblue}Benefits:} a built-in quality gate --- iterative critique lifts output quality with no custom manager logic.
 \end{itemize}
 }
 \end{frame}
@@ -646,87 +724,6 @@ manual migration effort into an AI-assisted one.
   {\footnotesize\textit{Each agent is given only the tools it needs.}}
 \end{column}
 \end{columns}
-\end{frame}
-
-% =====================================================================
-% E2E Orchestration Phases
-% =====================================================================
-\section{E2E Orchestration Phases}
-\begin{frame}
-\frametitle{E2E Orchestration Phases}
-\vspace{-0.2cm}
-\begin{center}
-\resizebox{0.99\linewidth}{!}{%
-\begin{tikzpicture}[
-  stage/.style={draw=earlblue, thick, rounded corners, fill=earlblue!12, text width=1.6cm,
-                align=center, minimum height=0.7cm, inner sep=3pt, text=earlblue, font=\scriptsize\bfseries},
-  rep/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8, text width=1.5cm,
-              align=center, minimum height=0.6cm, inner sep=2pt, text=earlblue, font=\scriptsize},
-  io/.style={draw=earlblue, thick, rounded corners, fill=earlblue!8,
-             text width=1.4cm, align=center, minimum height=0.65cm, inner sep=2pt, text=earlblue, font=\scriptsize\bfseries},
-  final/.style={draw=earlblue, very thick, rounded corners, fill=earlblue,
-                text width=1.9cm, align=center, minimum height=0.7cm, inner sep=3pt, text=white, font=\scriptsize\bfseries},
-  flow/.style={-{Latex[length=2mm]}, earlblue, very thick},
-  dflow/.style={-{Latex[length=1.6mm]}, earlblue!70, dashed, thick},
-]
-  % Input group
-  \draw[earlblue!70, dashed, rounded corners=4pt, thick] (-0.95,0.15) rectangle (1.25,2.85);
-  \node[io, text width=1.9cm] (legacy) at (0.15, 2.35) {Legacy App};
-  \node[io, minimum width=0.8cm, text width=0.7cm] (docs) at (-0.4, 1.35) {Docs};
-  \node[io, minimum width=0.8cm, text width=0.7cm] (repo) at (0.7, 1.35) {Repo};
-  % Human left
-  \draw[flow] (-2.5, 1.7) node[left, font=\normalsize\bfseries, text=earlblue] {Human} -- (-0.95, 1.7);
-  % Pipeline stages
-  \node[stage] (da)  at (2.8,  1.7) {Doc\\Analysis};
-  \node[stage] (dis) at (4.9,  1.7) {Discovery};
-  \node[stage] (dep) at (7.0,  1.7) {Deep\\Analysis};
-  \node[stage] (ec)  at (9.4,  1.7) {Enterprise\\Context};
-  \node[stage] (uaq) at (11.5, 1.7) {Questionnaire};
-  \node[stage] (rpt) at (13.6, 1.7) {Reporting};
-  % Orchestration annotations
-  \node[font=\scriptsize\itshape, text=earlblue] at (7.0,  2.55) {concurrent batches};
-  \node[font=\scriptsize\itshape, text=earlblue] at (11.5, 2.55) {concurrent agents};
-  \node[font=\scriptsize\itshape, text=earlblue] at (13.6, 2.55) {writer/reviewer};
-  % Stage arrows
-  \draw[flow] (1.25, 1.7) -- (da);
-  \draw[flow] (da)  -- (dis);
-  \draw[flow] (dis) -- (dep);
-  \draw[flow] (dep) -- (ec);
-  \draw[flow] (ec)  -- (uaq);
-  \draw[flow] (uaq) -- (rpt);
-  % Report boxes
-  \node[rep] (dar)  at (2.8,  0.35) {Doc\\report};
-  \node[rep] (dir)  at (4.9,  0.35) {Discovery\\report};
-  \node[rep] (dpr)  at (7.0,  0.35) {Deep\\report};
-  \node[rep] (sdp)  at (8.7, -0.55) {Security\\context};
-  \node[rep] (azr)  at (10.1,-0.55) {Cloud\\context};
-  \node[rep] (uaqr) at (11.5, 0.35) {Questionnaire\\report};
-  % Dashed arrows to reports
-  \draw[dflow] (da)       -- (dar);
-  \draw[dflow] (dis)      -- (dir);
-  \draw[dflow] (dep)      -- (dpr);
-  \draw[dflow] (ec.south) -- (sdp.north);
-  \draw[dflow] (ec.south) -- (azr.north);
-  \draw[dflow] (uaq)      -- (uaqr);
-  % Final output
-  \node[final] (out) at (15.8, 1.7) {\textbf{Assessment\\Report} $\bigstar$};
-  \draw[flow] (rpt) -- (out);
-  % Human right
-  \draw[flow] (out) -- (17.5, 1.7) node[right, font=\normalsize\bfseries, text=earlblue] {Human};
-\end{tikzpicture}
-}
-\end{center}
-\vspace{0.05cm}
-{\footnotesize\textit{Inputs (documents \& code) enter on the left; each phase records its findings and passes context forward.}}
-\vspace{0.15cm}
-\footnotesize
-\begin{itemize}\setlength\itemsep{1pt}
-  \item \textbf{Discovery:} group the code and documents into logical components. \textit{(Output: a map of the system.)}
-  \item \textbf{Deep Analysis:} assess each component's migration readiness, in parallel. \textit{(Output: per-component findings.)}
-  \item \textbf{Enterprise Context:} apply organisational security and cloud standards. \textit{(Output: policy-aligned recommendations.)}
-  \item \textbf{Readiness Questionnaire:} answer a standard cloud-readiness questionnaire. \textit{(Output: structured answers.)}
-  \item \textbf{Reporting:} consolidate and review all findings. \textit{(Output: the final assessment report.)}
-\end{itemize}
 \end{frame}
 
 % =====================================================================
