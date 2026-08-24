@@ -99,60 +99,52 @@
 
 \vspace{-0.1cm}
 \begin{columns}[T]
-% -- Left: logo + one-liner + scale stat --
-\begin{column}{0.33\textwidth}
+% -- Left: logo + positioning bullets --
+\begin{column}{0.49\textwidth}
   \centering
-  \vspace{0.35cm}
+  \vspace{0.2cm}
   \IfFileExists{assets/lseg.png}{%
-    \includegraphics[width=0.9\linewidth]{assets/lseg.png}%
+    \includegraphics[width=0.72\linewidth]{assets/lseg.png}%
   }{%
     \textbf{\large London Stock\\[2pt]Exchange Group}%
   }
-  \\[0.35cm]
-  {\footnotesize A leading global financial markets infrastructure and data provider - powering the entire markets value chain.}
-  \\[0.4cm]
-  \begin{tikzpicture}
-    \node[draw=earlblue,very thick,rounded corners,fill=earlblue!8,
-      minimum width=3.6cm,minimum height=1.2cm,align=center,text=earlblue,inner sep=4pt]
-      {{\large\bfseries $\sim$26{,}000}\\[1pt]{\scriptsize employees worldwide}};
-  \end{tikzpicture}
+  \\[0.05cm]
+  {\footnotesize
+  \begin{itemize}\setlength\itemsep{4pt}\setlength\leftmargini{0.9em}
+    \item Leading global financial markets infrastructure and data provider.
+    \item Operates connected businesses to serve customers across the entire financial markets value chain.
+    \item At the heart of the world's financial ecosystem.
+  \end{itemize}}
 \end{column}
-% -- Right: business divisions as a card grid + where-we-sit callout --
-\begin{column}{0.64\textwidth}
+% -- Right: headline data cards + where-we-sit callout --
+\begin{column}{0.48\textwidth}
 \begin{center}
-\resizebox{0.9\linewidth}{!}{%
-\begin{tikzpicture}[node distance=0.35cm]
-  \tikzstyle{card}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
-    text width=3.5cm,align=left,minimum height=1.25cm,inner sep=5pt,
+\resizebox{0.98\linewidth}{!}{%
+\begin{tikzpicture}[node distance=0.4cm]
+  \tikzstyle{carddark}=[draw=earlblue,very thick,rounded corners,fill=earlblue,
+    text width=3.6cm,align=center,minimum height=1.7cm,inner sep=6pt,
+    text=white,font=\scriptsize]
+  \tikzstyle{cardlight}=[draw=earlblue,very thick,rounded corners,fill=earlblue!8,
+    text width=3.6cm,align=center,minimum height=1.7cm,inner sep=6pt,
     text=earlblue,font=\scriptsize]
 
-  \node[card] (cm)  {\textbf{Capital Markets}\\ London Stock Exchange \& global trading venues};
-  \node[card,right=of cm] (fr) {\textbf{FTSE Russell}\\ Indices across asset classes -- FTSE 100/250, Russell 2000, ESG};
-  \node[card,below=of cm] (da) {\textbf{Data \& Analytics}\\ Workspace platform, pricing \& reference data};
-  \node[card,below=of fr] (pt) {\textbf{Post Trade}\\ LCH -- multi-asset class clearing house};
+  \node[carddark]  (emp)  {{\fontsize{22}{22}\selectfont\bfseries 26K+}\\[4pt] Employees};
+  \node[cardlight,right=of emp] (cust) {{\fontsize{22}{22}\selectfont\bfseries 44K+}\\[4pt] Customers in over 170 countries};
+  \node[cardlight,below=of emp] (div) {{\fontsize{22}{22}\selectfont\bfseries 4}\\[4pt] Divisions -- seamless access to global financial markets};
+  \node[carddark,below=of cust] (yrs) {{\fontsize{22}{22}\selectfont\bfseries 300+}\\[4pt] Years of innovation};
 \end{tikzpicture}%
 }
 \end{center}
 
-\vspace{0.15cm}
+\vspace{0.25cm}
 \begin{block}{\footnotesize Where we sit}
 \centering
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}
-  % -- Title of the silo --
-  \node[anchor=north,font=\small\bfseries,text=earlblue] (cpetitle) at (0,0)
-    {Infrastructure \& Cloud};
-  % -- Inner: our department, highlighted, with description --
   \node[draw=earlblue,very thick,rounded corners,fill=earlblue,text=white,
-    align=left,font=\footnotesize,text width=8cm,inner sep=8pt,
-    below=0.15cm of cpetitle] (ic)
-    {\textbf{Cloud Product Engineering (CPE)}\\[3pt]
-     World-class cloud foundation \& services and developer experience, empowering LSEG engineers to innovate and deliver business value.};
-  % -- Outer silo drawn behind, auto-fitted around title + inner box --
-  \begin{scope}[on background layer]
-    \node[draw=earlblue,thick,rounded corners,fill=earlblue!8,
-      fit=(cpetitle)(ic),inner sep=7pt] {};
-  \end{scope}
+    align=center,font=\footnotesize,text width=8cm,inner sep=8pt] (ic)
+    {\textbf{Cloud}\\[3pt]
+     We build and run LSEG's cloud foundation, services and developer experience.};
 \end{tikzpicture}%
 }
 \end{block}
@@ -242,7 +234,7 @@ manual migration effort into an AI-assisted one.
 \begin{block}{\small The problems Co-Migrate solves}
 {\footnotesize
 \begin{itemize}
-  \item \textbf{\color{earlblue}The bottleneck:} teams can spend \colorbox{earlblue!15}{up to \textbf{53 weeks}} on discovery alone - slow, manual and costly.
+  \item \textbf{\color{earlblue}The bottleneck:} teams can spend \colorbox{earlblue!15}{up to several weeks} on discovery alone - slow, manual and costly.
   \item \textbf{Risk matters early:} spotting risks and complexity up front is key to a successful migration.
 \end{itemize}
 }
