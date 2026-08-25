@@ -137,14 +137,13 @@
 \end{center}
 
 \vspace{0.25cm}
-\begin{block}{\footnotesize Where we sit}
+\begin{block}{\footnotesize Our Team}
 \centering
 \resizebox{\linewidth}{!}{%
 \begin{tikzpicture}
   \node[draw=earlblue,very thick,rounded corners,fill=earlblue,text=white,
     align=center,font=\footnotesize,text width=8cm,inner sep=8pt] (ic)
-    {\textbf{Cloud}\\[3pt]
-     We build and run LSEG's cloud foundation, services and developer experience.};
+    {We build and run LSEG's cloud foundation, services and developer experience.};
 \end{tikzpicture}%
 }
 \end{block}
@@ -191,10 +190,6 @@ first}!
 }
 \end{block}
 
-\vspace{0.02cm}
-{\small\centering
-\textbf{\color{earlblue}Co-Migrate} is a multi-agent system that makes the discovery AI-assisted.\par}
-
 \vspace{-0.5cm}
 \begin{columns}[T]
 % -- Left: migration patterns --
@@ -224,16 +219,16 @@ first}!
 \begin{column}{0.58\textwidth}
 \begin{center}
 {\small\bfseries\color{earlblue}From codebase to discovery report}\\[0.05cm]
-\begin{tikzpicture}[scale=0.62,every node/.style={transform shape},node distance=0.35cm]
+\begin{tikzpicture}[scale=0.58,every node/.style={transform shape},node distance=0.75cm]
   \tikzstyle{box}=[draw=earlblue,thick,rounded corners,fill=earlblue!8,
     minimum width=2cm,minimum height=1.5cm,align=center,text=earlblue,font=\scriptsize\bfseries]
   \tikzstyle{core}=[draw=earlblue,thick,rounded corners,fill=earlblue,
     minimum width=2cm,minimum height=1.5cm,align=center,text=white,font=\scriptsize\bfseries]
   \node[box] (input) {Application\\ codebase \&\\ documentation};
-  \node[core,right=of input] (core) {Co-Migrate};
+  \node[core,right=of input] (core) {Migration Analysis Pipeline};
   \node[box,right=of core] (report) {Discovery\\ report};
-  \draw[-{Latex[length=3mm]},earlblue,very thick] (input) -- (core);
-  \draw[-{Latex[length=3mm]},earlblue,very thick] (core) -- (report);
+  \draw[-{Latex[length=2.5mm]},earlblue,thick] (input) -- (core);
+  \draw[-{Latex[length=2.5mm]},earlblue,thick] (core) -- (report);
 \end{tikzpicture}
 \end{center}
 \end{column}
@@ -679,7 +674,6 @@ first}!
 \end{tikzpicture}
 }
 \end{center}
-{\footnotesize\textit{Reports flow forward; every phase reads from and writes to the shared memory.}}
 \end{frame}
 
 % =====================================================================
